@@ -20,6 +20,6 @@ public class Profiler
     public void Run(params string[] args)
     {
         this.Args = args;
-        new MainLayout().DrawLayout();
+        new ListLayout().DrawLayout();
     }
 }

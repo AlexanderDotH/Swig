@@ -2,7 +2,7 @@ using Spectre.Console;
 
 namespace Profiler.Console.Style.Layouts;
 
-public class MainLayout
+public class MainLayout : ILayout
 {
     public void DrawLayout()
     {
