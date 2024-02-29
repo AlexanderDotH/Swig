@@ -2,7 +2,7 @@ namespace Profiler.Shared.Classes;
 
 public class Profile
 {
-    public string Name { private set; get; }
-    public Guid Identifier { private set; get; }
-    public FileInfo GitConfigInfo { private set; get; }
+    public string Name { set; get; }
+    public Guid Identifier { set; get; }
+    public FileInfo GitConfigFile { set; get; }
 }

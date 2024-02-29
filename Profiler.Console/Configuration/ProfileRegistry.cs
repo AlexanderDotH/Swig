@@ -82,12 +82,15 @@ public class ProfileRegistry
         return Deserializer.Deserialize<Profile>(profileContent);
     }
 
-    private void WriteProfile(Profile profile)
+    public void WriteProfile(Profile profile, bool registerProfile = true)
     {
         string profileContent = this.Serializer.Serialize(profile);
         this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Profiles, 
             $"{profile.Identifier}/{profile.Identifier}.yaml",
             profileContent);
+        
+        if (registerProfile)
+            this._profiles.Add(profile);
     }
     
     private List<ProfileEntry> GetProfileEntries()
