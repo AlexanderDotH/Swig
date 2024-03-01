@@ -1,3 +1,4 @@
+using Profiler.Shared.Classes;
 using Profiler.Shared.Enums;
 using Profiler.Shared.Exceptions;
 using Profiler.Shared.Utils;
@@ -34,6 +35,35 @@ public class FileSystemManager
         return fileInfo;
     }
     
+    public FileInfo CreateAndWriteFile(EnumFileSystemFolder fileSystemFolder, string directoryName, string fileName, string buffer)
+    {
+        DirectoryInfo folderPath = CreateDirectory(fileSystemFolder, directoryName);
+        FileInfo destination = FileUtils.CombineFile(folderPath, fileName);
+        
+        File.WriteAllText(destination.FullName, buffer);
+
+        return destination;
+    }
+    
+    public DirectoryInfo CreateDirectory(EnumFileSystemFolder fileSystemFolder, string directoryName)
+    {
+        DirectoryInfo newDirectory = FileUtils.CombineDirectories(
+            CreateSubDirectory(GetFolder(fileSystemFolder)), directoryName);
+
+        return CreateSubDirectory(newDirectory);
+    }
+
+    public FileInfo CopyTo(EnumFileSystemFolder fileSystemFolder, FileInfo source, string directoryName, string fileName)
+    {
+        DirectoryInfo folderPath = CreateDirectory(fileSystemFolder, directoryName);
+        FileInfo destination = FileUtils.CombineFile(folderPath, fileName);
+
+        if (source.Exists)
+            return source.CopyTo(destination.FullName);
+
+        return destination;
+    }
+    
     public bool IsFilePresent(EnumFileSystemFolder fileSystemFolder, string fileName)
     {
         DirectoryInfo folderPath = GetFolder(fileSystemFolder);
@@ -60,8 +90,13 @@ public class FileSystemManager
         }
     }
 
-    private DirectoryInfo CreateSubDirectory(DirectoryInfo directory) => 
-        Directory.CreateDirectory(directory.FullName);
+    private DirectoryInfo CreateSubDirectory(DirectoryInfo directory)
+    {
+        if (!directory.Exists)
+            return Directory.CreateDirectory(directory.FullName);
+
+        return directory;
+    }
     
     private DirectoryInfo GetFolder(EnumFileSystemFolder fileSystemFolder)
     {

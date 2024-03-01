@@ -18,7 +18,7 @@ public class Profiler
     {
         FileSystemManager = new FileSystemManager();
         ProfileRegistry = new ProfileRegistry(this.FileSystemManager);
-        ProfileManager = new ProfileManager(this.ProfileRegistry);
+        ProfileManager = new ProfileManager(this.ProfileRegistry, this.FileSystemManager);
     }
 
     public void Run(params string[] args)

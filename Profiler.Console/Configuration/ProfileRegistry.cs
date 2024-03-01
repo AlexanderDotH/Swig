@@ -11,6 +11,7 @@ namespace Profiler.Console.Configuration;
 public class ProfileRegistry
 {
     private List<Profile> _profiles;
+    private List<ProfileEntry> _profileEntries;
     private string ProfileConfigName { get; } = "profiles.yaml";
     
     private FileSystemManager FileSystemManager { get; set; }
@@ -27,6 +28,7 @@ public class ProfileRegistry
         this.FileSystemManager = fileSystemManager;
 
         this._profiles = new List<Profile>();
+        this._profileEntries = new List<ProfileEntry>();
         
         Serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -81,16 +83,44 @@ public class ProfileRegistry
             this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, $"{identifier}/{identifier}.yaml");
         return Deserializer.Deserialize<Profile>(profileContent);
     }
+    
+    public void CreateNewProfile(string profileName, FileInfo gitConfigPath)
+    {
+        Profile profile = new Profile()
+        {
+            Name = profileName,
+            Identifier = Guid.NewGuid()
+        };
+
+        DirectoryInfo workSpace = this.PrepareWorkspace(profile);
+
+        FileInfo newGitConfigPath = this.FileSystemManager.CopyTo(EnumFileSystemFolder.Profiles, gitConfigPath,
+            workSpace.Name, ".gitconfig");
+
+        profile.GitConfigFile = newGitConfigPath.FullName;
+
+        WriteProfile(profile, true);
+    }
 
     public void WriteProfile(Profile profile, bool registerProfile = true)
     {
         string profileContent = this.Serializer.Serialize(profile);
-        this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Profiles, 
-            $"{profile.Identifier}/{profile.Identifier}.yaml",
-            profileContent);
+
+        DirectoryInfo workSpace = this.PrepareWorkspace(profile);
         
+        this.FileSystemManager.CreateAndWriteFile(
+            EnumFileSystemFolder.Profiles, 
+            workSpace.Name, 
+            $"{profile.Identifier}.yaml",
+            profileContent);
+
         if (registerProfile)
-            this._profiles.Add(profile);
+            AddAndWriteProfile(profile);
+    }
+    
+    public DirectoryInfo PrepareWorkspace(Profile profile)
+    {
+        return this.FileSystemManager.CreateDirectory(EnumFileSystemFolder.Profiles, profile.Identifier.ToString());
     }
     
     private List<ProfileEntry> GetProfileEntries()
@@ -105,15 +135,26 @@ public class ProfileRegistry
         }
         catch (Exception e)
         {
-            return CreateDefaultEmptyProfileEntries();
+            return UpdateRegistryOnDisk(new List<ProfileEntry>());
         }
     }
     
-    // find default git ignore
-    private List<ProfileEntry> CreateDefaultEmptyProfileEntries()
+    private void AddAndWriteProfile(Profile profile)
     {
-        List<ProfileEntry> profileEntries = new List<ProfileEntry>();
+        this._profiles.Add(profile);
 
+        ProfileEntry profileEntry = new ProfileEntry()
+        {
+            Identifier = profile.Identifier
+        };
+        
+        this._profileEntries.Add(profileEntry);
+        
+        UpdateRegistryOnDisk(this._profileEntries);
+    }
+    
+    private List<ProfileEntry> UpdateRegistryOnDisk(List<ProfileEntry> profileEntries)
+    {
         try
         {
             string serialized = this.Serializer.Serialize(profileEntries);
