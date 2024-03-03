@@ -29,7 +29,7 @@ public class CreateProfileLayout : ILayout
                 GitUtils.IsGlobalConfigAvailable() ? GitUtils.GetGlobalGitConfigPath() : null);
         }
 
-        Profiler.Instance.ProfileRegistry.CreateNewProfile(profileName, new FileInfo(configPath));
+        Profiler.Instance.ProfileManager.CreateNewProfile(profileName, new FileInfo(configPath));
         
         AnsiConsole.Clear();
         this.Parent.DrawLayout();
