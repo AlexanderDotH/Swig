@@ -1,43 +1,28 @@
-using Profiler.Console.Style.Models;
+using Profiler.Console.Style.Models.Children;
 using Spectre.Console;
-using Profile = Profiler.Shared.Classes.Profile;
 
-namespace Profiler.Console.Style.Layouts;
+namespace Profiler.Console.Style.Layouts.Children;
 
-public class ViewProfilesLayout : ILayout
+public class ViewProfilesLayout : BaseChildLayout
 {
     private ViewProfilesModel Model { get; set; }
-    private ILayout Parent { get; set; }
 
-    public ViewProfilesLayout(ILayout parent)
+    public ViewProfilesLayout(ILayout parent) : base(parent)
     {
-        this.Parent = parent;
         this.Model = new ViewProfilesModel();
     }
-    
-    public void DrawLayout()
+
+    public override void DrawLayout()
     {
-        Layout leftLayout = new Layout("Left");
+        Layout leftLayout = new Layout("View Profiles");
         leftLayout.Name = "Profiles";
 
         leftLayout.Update(this.Model.GetProfileTable());
         
-        Layout rightLayout = new Layout("Right");
-
-        Panel guidePanel = new Panel("[lightseagreen]You can choose between one of the options below and select what you want.[/]");
-        guidePanel.Header("How to use this thing?", Justify.Center);
-
-        rightLayout.Update(guidePanel);
-        
-        Layout rootLayout =
-            new Layout("Root")
-                .SplitColumns(leftLayout, rightLayout);
-        
-        AnsiConsole.Write(rootLayout);
+        AnsiConsole.Write(leftLayout);
 
         System.Console.ReadKey();
-        AnsiConsole.Clear();
         
-        this.Parent.DrawLayout();
+        DrawParent();
     }
 }

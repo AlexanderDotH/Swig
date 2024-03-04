@@ -20,6 +20,11 @@ public class MainLayout : ILayout
                 new ViewProfilesLayout(this).DrawLayout();
                 break;
             }
+            case "Load":
+            {
+                new LoadProfileLayout(this).DrawLayout();
+                break;
+            }
             case "Create":
             {
                 new CreateProfileLayout(this).DrawLayout();

@@ -14,17 +14,17 @@ public class ProfileManager
 
     private ProfileRegistry ProfileRegistry { get; set; }
     private FileSystemManager FileSystemManager { get; set; }
-    
+
     private ISerializer Serializer { get; set; }
     private IDeserializer Deserializer { get; set; }
-    
+
     public ProfileManager(ProfileRegistry profileRegistry, FileSystemManager fileSystemManager)
     {
         this._profiles = new List<Profile>();
-        
+
         this.ProfileRegistry = profileRegistry;
         this.FileSystemManager = fileSystemManager;
-        
+
         Serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
@@ -32,10 +32,10 @@ public class ProfileManager
         Deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
-        
+
         this.ReadAndSetupProfiles();
     }
-    
+
     private void ReadAndSetupProfiles()
     {
         foreach (ProfileEntry profileEntry in this.ProfileRegistry.ProfileEntries)
@@ -44,11 +44,16 @@ public class ProfileManager
 
             if (!TryGetProfile(profileEntry.Identifier, out profile))
                 continue;
-            
+
             this._profiles.Add(profile);
         }
     }
-    
+
+    public bool DoesProfileExist(string profileName)
+    {
+        return this._profiles.Any(p => p.Name.Equals(profileName));
+    }
+
     public void CreateNewProfile(string profileName, FileInfo gitConfigPath)
     {
         Profile profile = new Profile()
@@ -66,7 +71,7 @@ public class ProfileManager
 
         this.WriteProfile(profile, true);
     }
-    
+
     private bool TryGetProfile(Guid profileId, out Profile profile)
     {
         try
@@ -80,28 +85,28 @@ public class ProfileManager
             return false;
         }
     }
-    
+
     private DirectoryInfo PrepareWorkspace(Profile profile)
     {
         return this.FileSystemManager.CreateDirectory(EnumFileSystemFolder.Profiles, profile.Identifier.ToString());
     }
-    
+
     private Profile ReadProfile(Guid identifier)
     {
         string profileContent =
             this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, $"{identifier}/{identifier}.yaml");
         return Deserializer.Deserialize<Profile>(profileContent);
     }
-    
+
     private void WriteProfile(Profile profile, bool registerProfile = true)
     {
         string profileContent = this.Serializer.Serialize(profile);
 
         DirectoryInfo workSpace = this.PrepareWorkspace(profile);
-        
+
         this.FileSystemManager.CreateAndWriteFile(
-            EnumFileSystemFolder.Profiles, 
-            workSpace.Name, 
+            EnumFileSystemFolder.Profiles,
+            workSpace.Name,
             $"{profile.Identifier}.yaml",
             profileContent);
 

@@ -1,7 +1,7 @@
 using Spectre.Console;
 using Profile = Profiler.Shared.Classes.Profile;
 
-namespace Profiler.Console.Style.Models;
+namespace Profiler.Console.Style.Models.Children;
 
 public class ViewProfilesModel : ILayoutModel
 {
@@ -15,11 +15,12 @@ public class ViewProfilesModel : ILayoutModel
         table.AddColumn(new TableColumn("Number"));
         table.AddColumn(new TableColumn("Name"));
         table.AddColumn(new TableColumn("Identifier"));
+        table.AddColumn(new TableColumn("Git config path"));
 
         for (int i = 0; i < profiles.Count; i++)
         {
             Profile currentProfile = profiles[i];
-            table.AddRow($"{i}", currentProfile.Name, $"{currentProfile.Identifier}");
+            table.AddRow($"{i}", currentProfile.Name, $"{currentProfile.Identifier}", currentProfile.GitConfigFile);
         }
 
         return table;

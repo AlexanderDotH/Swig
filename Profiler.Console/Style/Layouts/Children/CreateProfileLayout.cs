@@ -1,22 +1,24 @@
 using Profiler.Shared.Utils;
 using Spectre.Console;
-using Profile = Profiler.Shared.Classes.Profile;
 
 namespace Profiler.Console.Style.Layouts.Children;
 
-public class CreateProfileLayout : ILayout
+public class CreateProfileLayout : BaseChildLayout
 {
-    private ILayout Parent { get; set; }
-    
-    public CreateProfileLayout(ILayout parent)
-    {
-        this.Parent = parent;
-    }
+    public CreateProfileLayout(ILayout parent) : base(parent) { }
 
-    public void DrawLayout()
+    public override void DrawLayout()
     {
         string profileName = AnsiConsole.Ask<string>("How do you want to call [mediumturquoise]you[/] new profile? :cat_with_wry_smile: ", "Work");
 
+        if (Profiler.Instance.ProfileManager.DoesProfileExist(profileName))
+        {
+            AnsiConsole.Markup("[red3_1]Please provide a non duplicated profile names[/]");
+            AnsiConsole.Clear();
+            System.Console.ReadKey();
+            DrawLayout();
+        }
+        
         bool importFromDisk = AnsiConsole.Confirm(
             $"Do you want to import the git config [mediumturquoise]from disk[/]?", false);
 
@@ -31,7 +33,6 @@ public class CreateProfileLayout : ILayout
 
         Profiler.Instance.ProfileManager.CreateNewProfile(profileName, new FileInfo(configPath));
         
-        AnsiConsole.Clear();
-        this.Parent.DrawLayout();
+        DrawParent();
     }
 }
