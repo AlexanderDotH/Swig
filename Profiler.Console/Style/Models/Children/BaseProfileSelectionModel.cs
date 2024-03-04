@@ -1,9 +1,8 @@
-using Spectre.Console;
-using Profile = Profiler.Shared.Classes.Profile;
+using Profiler.Shared.Classes;
 
 namespace Profiler.Console.Style.Models.Children;
 
-public class LoadProfileModel : ILayoutModel
+public class BaseProfileSelectionModel : ILayoutModel
 {
     public string[] GetChoices()
     {

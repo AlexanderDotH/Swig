@@ -1,4 +1,5 @@
 using System.Reflection;
+using Profiler.Console.Exceptions;
 using Profiler.Console.FileSystem;
 using Profiler.Shared.Classes;
 using Profiler.Shared.Enums;
@@ -54,6 +55,34 @@ public class ProfileManager
         return this._profiles.Any(p => p.Name.Equals(profileName));
     }
 
+    public Profile GetProfileByName(string profileName)
+    {
+        return this._profiles.First(p => p.Name.Equals(profileName));
+    }
+
+    public void DeleteProfile(Profile profile)
+    {
+        FileInfo gitConfigFileInfo = new FileInfo(profile.GitConfigFile);
+        
+        if (gitConfigFileInfo.Exists)
+            gitConfigFileInfo.Delete();
+        
+        if (!this.FileSystemManager.DeleteFile(
+                EnumFileSystemFolder.Profiles,
+                profile.Identifier.ToString(),
+                $"{profile.Identifier}.yaml"))
+            throw new ProfileException("Cannot delete profile xaml");
+        
+        if (!this.FileSystemManager.DeleteDirectory(
+                EnumFileSystemFolder.Profiles,
+                profile.Identifier.ToString()))
+            throw new ProfileException("Cannot delete profile directory");
+
+        this._profiles.Remove(profile);
+        
+        this.ProfileRegistry.RemoveAndWriteProfile(profile);
+    }
+    
     public void CreateNewProfile(string profileName, FileInfo gitConfigPath)
     {
         Profile profile = new Profile()

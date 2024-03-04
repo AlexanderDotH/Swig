@@ -3,23 +3,21 @@ using Spectre.Console;
 
 namespace Profiler.Console.Style.Layouts.Children;
 
-public class LoadProfileLayout : BaseChildLayout
+public class EditProfileSelectionLayout : BaseChildLayout
 {
     private BaseProfileSelectionModel Model { get; set; }
-
-    public LoadProfileLayout(ILayout parent) : base(parent)
+    
+    public EditProfileSelectionLayout(ILayout parent) : base(parent)
     {
-        Model = new BaseProfileSelectionModel();
+        this.Model = new BaseProfileSelectionModel();
     }
 
     public override void DrawLayout()
     {
         SelectionPrompt<string> profileSelectionPrompt = new SelectionPrompt<string>()
-            .Title("Please choose a [mediumturquoise]profile[/]")
+            .Title("Please pick a [mediumturquoise]profile[/]")
             .AddChoices(this.Model.GetChoices());
 
         string choice = AnsiConsole.Prompt(profileSelectionPrompt);
-        
-        DrawParent();
     }
 }

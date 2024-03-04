@@ -45,6 +45,35 @@ public class FileSystemManager
         return destination;
     }
     
+    public bool DeleteFile(EnumFileSystemFolder fileSystemFolder, string directoryName, string fileName)
+    {
+        DirectoryInfo folderPath = FileUtils.CombineDirectories(GetFolder(fileSystemFolder), directoryName);
+        FileInfo destination = FileUtils.CombineFile(folderPath, fileName);
+        
+        try
+        {
+            destination.Delete();
+            return true;
+        }
+        catch (Exception e) { }
+
+        return false;
+    }
+    
+    public bool DeleteDirectory(EnumFileSystemFolder fileSystemFolder, string directoryName)
+    {
+        DirectoryInfo folderPath = FileUtils.CombineDirectories(GetFolder(fileSystemFolder), directoryName);
+        
+        try
+        {
+            folderPath.Delete();
+            return true;
+        }
+        catch (Exception e) { }
+
+        return false;
+    }
+    
     public DirectoryInfo CreateDirectory(EnumFileSystemFolder fileSystemFolder, string directoryName)
     {
         DirectoryInfo newDirectory = FileUtils.CombineDirectories(

@@ -58,7 +58,13 @@ public class ProfileRegistry
         
         this._profileEntries.Add(profileEntry);
         
-        UpdateRegistryOnDisk(this._profileEntries);
+        this._profileEntries = UpdateRegistryOnDisk(this._profileEntries);
+    }
+    
+    public void RemoveAndWriteProfile(Profile profile)
+    {
+        this._profileEntries.RemoveAll(p => p.Identifier.Equals(profile.Identifier));
+        this._profileEntries = UpdateRegistryOnDisk(this._profileEntries);
     }
     
     private List<ProfileEntry> UpdateRegistryOnDisk(List<ProfileEntry> profileEntries)

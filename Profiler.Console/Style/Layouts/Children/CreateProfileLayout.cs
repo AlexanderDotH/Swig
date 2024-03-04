@@ -13,7 +13,7 @@ public class CreateProfileLayout : BaseChildLayout
 
         if (Profiler.Instance.ProfileManager.DoesProfileExist(profileName))
         {
-            AnsiConsole.Markup("[red3_1]Please provide a non duplicated profile names[/]");
+            AnsiConsole.Markup("[red1]Please provide a non duplicated profile names[/]");
             AnsiConsole.Clear();
             System.Console.ReadKey();
             DrawLayout();

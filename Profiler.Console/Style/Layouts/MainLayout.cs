@@ -30,6 +30,11 @@ public class MainLayout : ILayout
                 new CreateProfileLayout(this).DrawLayout();
                 break;
             }
+            case "Delete":
+            {
+                new DeleteProfileLayout(this).DrawLayout();
+                break;
+            }
         }
     }
 }
