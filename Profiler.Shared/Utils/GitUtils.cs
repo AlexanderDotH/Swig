@@ -15,6 +15,11 @@ public class GitUtils
         return Path.Combine(configDir, ".gitconfig");
     }
 
+    public static void SetGlobalGitConfigPath(FileInfo fileInfo)
+    {
+        GlobalSettings.SetConfigSearchPaths(ConfigurationLevel.Global, fileInfo.Directory.FullName);
+    }
+
     public static bool IsGlobalConfigAvailable()
     {
         IEnumerable<string> configs = GlobalSettings.GetConfigSearchPaths(ConfigurationLevel.Global);

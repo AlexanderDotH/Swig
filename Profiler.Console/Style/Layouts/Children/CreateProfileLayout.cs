@@ -31,7 +31,7 @@ public class CreateProfileLayout : BaseChildLayout
                 GitUtils.IsGlobalConfigAvailable() ? GitUtils.GetGlobalGitConfigPath() : null);
         }
 
-        Profiler.Instance.ProfileManager.CreateNewProfile(profileName, new FileInfo(configPath));
+        Profiler.Instance.ProfileManager.CreateNewProfile(profileName, configPath);
         
         DrawParent();
     }

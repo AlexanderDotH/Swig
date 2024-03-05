@@ -9,7 +9,7 @@ public class MainLayout : ILayout
     {
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
             .Title("What do [mediumturquoise]you[/] want to do?")
-            .AddChoices("View", "Load", "Create", "Edit", "Delete");
+            .AddChoices("View", "Load", "Create", "Edit");
 
         string choice = AnsiConsole.Prompt(actionSelectonPrompt);
 
@@ -30,9 +30,9 @@ public class MainLayout : ILayout
                 new CreateProfileLayout(this).DrawLayout();
                 break;
             }
-            case "Delete":
+            case "Edit":
             {
-                new DeleteProfileLayout(this).DrawLayout();
+                new EditProfileSelectionLayout(this).DrawLayout();
                 break;
             }
         }

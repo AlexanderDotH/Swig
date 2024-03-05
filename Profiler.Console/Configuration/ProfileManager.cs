@@ -82,8 +82,16 @@ public class ProfileManager
         
         this.ProfileRegistry.RemoveAndWriteProfile(profile);
     }
+
+    public void RenameProfile(Profile profile, string newName)
+    {
+        Profile p = this._profiles.First(pl => pl.Identifier.Equals(profile.Identifier));
+        p.Name = newName;
+        
+        this.WriteProfile(profile, false);
+    }
     
-    public void CreateNewProfile(string profileName, FileInfo gitConfigPath)
+    public void CreateNewProfile(string profileName, string gitConfigPath)
     {
         Profile profile = new Profile()
         {
@@ -93,8 +101,17 @@ public class ProfileManager
 
         DirectoryInfo workSpace = this.PrepareWorkspace(profile);
 
-        FileInfo newGitConfigPath = this.FileSystemManager.CopyTo(EnumFileSystemFolder.Profiles, gitConfigPath,
-            workSpace.Name, ".gitconfig");
+        FileInfo newGitConfigPath = null;
+        
+        if (gitConfigPath != null)
+        {
+            newGitConfigPath = this.FileSystemManager.CopyTo(EnumFileSystemFolder.Profiles, new FileInfo(gitConfigPath),
+                workSpace.Name, ".gitconfig");
+        }
+        else
+        {
+            newGitConfigPath = this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Profiles, workSpace.Name, ".gitconfig", string.Empty);
+        }
 
         profile.GitConfigFile = newGitConfigPath.FullName;
 
@@ -115,7 +132,7 @@ public class ProfileManager
         }
     }
 
-    private DirectoryInfo PrepareWorkspace(Profile profile)
+    public DirectoryInfo PrepareWorkspace(Profile profile)
     {
         return this.FileSystemManager.CreateDirectory(EnumFileSystemFolder.Profiles, profile.Identifier.ToString());
     }
