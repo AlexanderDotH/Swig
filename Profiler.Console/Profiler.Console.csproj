@@ -5,6 +5,7 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageIcon>swig-logo.png</PackageIcon>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,6 +23,20 @@
 
     <ItemGroup>
       <Folder Include="Style\Components\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Eckige Ecken online.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="swig-logo.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>

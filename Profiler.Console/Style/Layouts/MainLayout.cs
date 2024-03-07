@@ -1,4 +1,3 @@
-using LibGit2Sharp;
 using Profiler.Console.Style.Layouts.Children;
 using Spectre.Console;
 
@@ -9,34 +8,34 @@ public class MainLayout : ILayout
     public void DrawLayout()
     {
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
-            .Title("What do [mediumturquoise]you[/] want to do?")
-            .AddChoices(":glasses: View", ":file_cabinet: Load", ":high_voltage: Create", ":pencil: Edit", ":fast_reverse_button:  Restore", ":door: Exit");
+            .Title("[dodgerblue1]W[/][blueviolet]e[/][slateblue3_1]l[/][royalblue1]c[/][lightslateblue]o[/][mediumpurple]m[/][slateblue1]e[/] to Profiler, what do [mediumturquoise]you[/] want to do?")
+            .AddChoices("View", "Load", "Create", "Edit", "Restore", "Exit");
 
         string choice = AnsiConsole.Prompt(actionSelectonPrompt);
 
         switch (choice)
         {
-            case ":glasses: View":
+            case "View":
             {
                 new ViewProfilesLayout(this).DrawLayout();
                 break;
             }
-            case ":file_cabinet: Load":
+            case "Load":
             {
                 new LoadProfileLayout(this).DrawLayout();
                 break;
             }
-            case ":high_voltage: Create":
+            case "Create":
             {
                 new CreateProfileLayout(this).DrawLayout();
                 break;
             }
-            case ":pencil: Edit":
+            case "Edit":
             {
                 new EditProfileSelectionLayout(this).DrawLayout();
                 break;
             }
-            case ":fast_reverse_button:  Restore":
+            case "Restore":
             {
                 if (Profiler.Instance.ProfileManager.RestoreBackup())
                 {
@@ -52,7 +51,7 @@ public class MainLayout : ILayout
                 DrawLayout();
                 break;
             }
-            case ":door: Exit":
+            case "Exit":
             {
                 Environment.Exit(0);
                 break;
