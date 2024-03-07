@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PROJECT_FILE="../Profiler.sln"
+PROJECT_FILE="../Swig.sln"
 OUTPUT_DIR="bin"
-APP_NAME="Profiler"
+APP_NAME="Swig"
 
 set -e
 

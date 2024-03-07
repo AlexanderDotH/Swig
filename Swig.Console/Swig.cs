@@ -4,37 +4,37 @@ using Swig.Console.Style.Layouts;
 
 namespace Swig.Console;
 
-public class Profiler
+public class Swig
 {
-    public FileSystemManager FileSystemManager { get; private set; }
-    public ProfileRegistry ProfileRegistry { get; private set; }
+    private FileSystemManager FileSystemManager { get; set; }
+    private ProfileRegistry ProfileRegistry { get; set; }
     public ProfileManager ProfileManager { get; private set; }
 
-    private static Profiler _profilerInstance;
+    private static Swig _swigInstance;
     
     private string[] Args { get; set; }
     
-    public Profiler()
+    public Swig(params string[] args)
     {
+        _swigInstance = this;
+        
+        this.Args = args;
+        
         FileSystemManager = new FileSystemManager();
         ProfileRegistry = new ProfileRegistry(this.FileSystemManager);
         ProfileManager = new ProfileManager(this.ProfileRegistry, this.FileSystemManager);
     }
 
-    public void Run(params string[] args)
+    public void Run()
     {
-        this.Args = args;
-        
-        _profilerInstance = this;
-        
         new MainLayout().DrawLayout();
     }
 
-    public static Profiler Instance
+    public static Swig Instance
     {
         get
         {
-            return _profilerInstance;
+            return _swigInstance;
         }
     }
 }

@@ -1,6 +1,6 @@
 using Spectre.Console;
 using Swig.Console.Style.Models.Children;
-using Profile = Profiler.Shared.Classes.Profile;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children.EditProfile;
 
@@ -31,7 +31,7 @@ public class EditProfileSelectionLayout : BaseChildLayout
             }
             default:
             {
-                Profile selectedProfile = Profiler.Instance.ProfileManager.GetProfileByName(choice);
+                Profile selectedProfile = Swig.Instance.ProfileManager.GetProfileByName(choice);
                 new EditProfileActionLayout(this, selectedProfile).DrawLayout();
                 break;
             }

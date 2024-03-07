@@ -1,12 +1,12 @@
-using Profiler.Shared.Enums;
-using Profiler.Shared.Exceptions;
-using Profiler.Shared.Utils;
+using Swig.Shared.Enums;
+using Swig.Shared.Exceptions;
+using Swig.Shared.Utils;
 
 namespace Swig.Console.FileSystem;
 
 public class FileSystemManager
 {
-    private String WorkingFolder { get; } = "Profiler";
+    private String WorkingFolder { get; } = "Swig";
     public DirectoryInfo WorkingDirectory { get; private set; }
     
     public FileSystemManager()

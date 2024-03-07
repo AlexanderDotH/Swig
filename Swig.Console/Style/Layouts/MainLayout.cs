@@ -9,7 +9,7 @@ public class MainLayout : ILayout
     public void DrawLayout()
     {
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
-            .Title("[dodgerblue1]W[/][blueviolet]e[/][slateblue3_1]l[/][royalblue1]c[/][lightslateblue]o[/][mediumpurple]m[/][slateblue1]e[/] to Profiler, what do [mediumturquoise]you[/] want to do?")
+            .Title("[dodgerblue1]W[/][blueviolet]e[/][slateblue3_1]l[/][royalblue1]c[/][lightslateblue]o[/][mediumpurple]m[/][slateblue1]e[/] to Swig, what do [mediumturquoise]you[/] want to do?")
             .AddChoices("View", "Load", "Create", "Edit", "Restore", "Exit");
 
         string choice = AnsiConsole.Prompt(actionSelectonPrompt);
@@ -38,7 +38,7 @@ public class MainLayout : ILayout
             }
             case "Restore":
             {
-                if (Profiler.Instance.ProfileManager.RestoreBackup())
+                if (Swig.Instance.ProfileManager.RestoreBackup())
                 {
                     AnsiConsole.MarkupLine("[mediumturquoise]Successfully[/] restored backup!");
                 }
@@ -47,8 +47,8 @@ public class MainLayout : ILayout
                     AnsiConsole.MarkupLine("[red1]Cannot[/] restored backup because there is no backup copy :sad_but_relieved_face:.");
                 }
                 
-                AnsiConsole.Clear();
                 System.Console.ReadKey();
+                AnsiConsole.Clear();
                 DrawLayout();
                 break;
             }

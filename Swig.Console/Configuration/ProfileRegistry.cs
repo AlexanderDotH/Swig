@@ -1,7 +1,7 @@
-using Profiler.Shared.Classes;
-using Profiler.Shared.Enums;
-using Profiler.Shared.Serializable;
 using Swig.Console.FileSystem;
+using Swig.Shared.Classes;
+using Swig.Shared.Enums;
+using Swig.Shared.Serializable;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -35,7 +35,7 @@ public class ProfileRegistry
     private List<ProfileEntry> GetProfileEntries()
     {
         if (!this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this.ProfileConfigName))
-            return new List<ProfileEntry>();
+            return this.UpdateRegistryOnDisk(new List<ProfileEntry>());
         
         try
         {

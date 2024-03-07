@@ -1,4 +1,4 @@
-namespace Profiler.Shared.Enums;
+namespace Swig.Shared.Enums;
 
 public enum EnumFileSystemExceptionType
 {

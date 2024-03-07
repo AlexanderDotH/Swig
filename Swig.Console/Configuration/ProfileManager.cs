@@ -1,9 +1,9 @@
-using Profiler.Shared.Classes;
-using Profiler.Shared.Enums;
-using Profiler.Shared.Serializable;
-using Profiler.Shared.Utils;
 using Swig.Console.Exceptions;
 using Swig.Console.FileSystem;
+using Swig.Shared.Classes;
+using Swig.Shared.Enums;
+using Swig.Shared.Serializable;
+using Swig.Shared.Utils;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 

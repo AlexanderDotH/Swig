@@ -1,6 +1,6 @@
 using Spectre.Console;
 using Swig.Console.Style.Models.Children;
-using Profile = Profiler.Shared.Classes.Profile;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children.EditProfile;
 
@@ -27,7 +27,7 @@ public class DeleteProfileLayout : BaseChildLayout
             DrawLayout();
         }
 
-        Profiler.Instance.ProfileManager.DeleteProfile(this.Profile);
+        Swig.Instance.ProfileManager.DeleteProfile(this.Profile);
         
         AnsiConsole.Markup($"Successfully deleted profile [red1]{this.Profile.Name}[/]!");
         

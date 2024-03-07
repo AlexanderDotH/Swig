@@ -1,7 +1,7 @@
-using Profiler.Shared.Utils;
 using Spectre.Console;
 using Swig.Console.Style.Models.Children;
-using Profile = Profiler.Shared.Classes.Profile;
+using Swig.Shared.Utils;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children.EditProfile;
 
@@ -28,7 +28,7 @@ public class EditProfileActionLayout : BaseChildLayout
 
         if (choice.SequenceEqual(openLabel))
         {
-            DirectoryInfo profileFolder = Profiler.Instance.ProfileManager.PrepareWorkspace(this.Profile);
+            DirectoryInfo profileFolder = Swig.Instance.ProfileManager.PrepareWorkspace(this.Profile);
             OsUtils.OpenFileExplorerAt(profileFolder);
             DrawLayout();
         }

@@ -1,8 +1,6 @@
-using System.Linq.Expressions;
-using System.Text;
-using Profiler.Shared.Enums;
+using Swig.Shared.Enums;
 
-namespace Profiler.Shared.Exceptions;
+namespace Swig.Shared.Exceptions;
 
 public class FileSystemException : Exception
 {

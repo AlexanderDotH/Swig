@@ -1,4 +1,4 @@
-namespace Profiler.Shared.Serializable;
+namespace Swig.Shared.Serializable;
 
 public class ProfileEntry
 {

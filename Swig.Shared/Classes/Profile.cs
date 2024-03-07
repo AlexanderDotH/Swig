@@ -1,4 +1,4 @@
-namespace Profiler.Shared.Classes;
+namespace Swig.Shared.Classes;
 
 public class Profile
 {

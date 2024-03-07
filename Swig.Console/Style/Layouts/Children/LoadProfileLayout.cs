@@ -1,7 +1,7 @@
-using Profiler.Shared.Utils;
 using Spectre.Console;
 using Swig.Console.Style.Models.Children;
-using Profile = Profiler.Shared.Classes.Profile;
+using Swig.Shared.Utils;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children;
 
@@ -26,7 +26,7 @@ public class LoadProfileLayout : BaseChildLayout
         if (choice.SequenceEqual(":backhand_index_pointing_left: Go back"))
             DrawParent();
 
-        Profile profile = Profiler.Instance.ProfileManager.GetProfileByName(choice);
+        Profile profile = Swig.Instance.ProfileManager.GetProfileByName(choice);
         GitUtils.SetGlobalGitConfigPath(new FileInfo(profile.GitConfigFile));
         
         AnsiConsole.MarkupLine($"[mediumturquoise]Successfully[/] loaded profile {profile.Name}!");

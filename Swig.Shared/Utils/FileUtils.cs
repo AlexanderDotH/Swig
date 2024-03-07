@@ -1,4 +1,4 @@
-namespace Profiler.Shared.Utils;
+namespace Swig.Shared.Utils;
 
 public static class FileUtils
 {

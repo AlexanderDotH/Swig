@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace Profiler.Shared.Utils;
+namespace Swig.Shared.Utils;
 
 public class OsUtils
 {

@@ -1,6 +1,6 @@
 using Bogus.DataSets;
 using Spectre.Console;
-using Profile = Profiler.Shared.Classes.Profile;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children.EditProfile;
 
@@ -19,7 +19,7 @@ public class RenameProfileLayout : BaseChildLayout
 
         string newName = AnsiConsole.Ask<string>("Please provide a creative but silly name", new Hacker().Noun());
 
-        if (Profiler.Instance.ProfileManager.DoesProfileExist(newName))
+        if (Swig.Instance.ProfileManager.DoesProfileExist(newName))
         {
             AnsiConsole.Markup("[red1]Please provide a non duplicated profile names[/]");
             AnsiConsole.Clear();
@@ -27,7 +27,7 @@ public class RenameProfileLayout : BaseChildLayout
             DrawLayout();
         }
         
-        Profiler.Instance.ProfileManager.RenameProfile(this.Profile, newName);
+        Swig.Instance.ProfileManager.RenameProfile(this.Profile, newName);
         
         this.DrawParent();
     }

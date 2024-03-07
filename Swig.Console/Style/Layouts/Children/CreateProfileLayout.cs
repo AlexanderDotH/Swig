@@ -1,5 +1,5 @@
-using Profiler.Shared.Utils;
 using Spectre.Console;
+using Swig.Shared.Utils;
 
 namespace Swig.Console.Style.Layouts.Children;
 
@@ -11,11 +11,11 @@ public class CreateProfileLayout : BaseChildLayout
     {
         string profileName = AnsiConsole.Ask<string>("How do you want to call [mediumturquoise]you[/] new profile? :cat_with_wry_smile: ", "Work");
 
-        if (Profiler.Instance.ProfileManager.DoesProfileExist(profileName))
+        if (Swig.Instance.ProfileManager.DoesProfileExist(profileName))
         {
             AnsiConsole.Markup("[red1]Please provide a non duplicated profile names[/]");
-            AnsiConsole.Clear();
             System.Console.ReadKey();
+            AnsiConsole.Clear();
             DrawLayout();
         }
         
@@ -31,7 +31,7 @@ public class CreateProfileLayout : BaseChildLayout
                 GitUtils.IsGlobalConfigAvailable() ? GitUtils.GetGlobalGitConfigPath() : null);
         }
 
-        Profiler.Instance.ProfileManager.CreateNewProfile(profileName, configPath);
+        Swig.Instance.ProfileManager.CreateNewProfile(profileName, configPath);
         
         DrawParent();
     }
