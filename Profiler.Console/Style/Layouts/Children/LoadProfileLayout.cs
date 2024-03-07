@@ -29,6 +29,8 @@ public class LoadProfileLayout : BaseChildLayout
         Profile profile = Profiler.Instance.ProfileManager.GetProfileByName(choice);
         GitUtils.SetGlobalGitConfigPath(new FileInfo(profile.GitConfigFile));
         
+        AnsiConsole.MarkupLine($"[mediumturquoise]Successfully[/] loaded profile {profile.Name}!");
+        System.Console.ReadKey();
         DrawParent();
     }
 }

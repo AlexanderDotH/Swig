@@ -8,16 +8,33 @@ public class GitUtils
     {
         IEnumerable<string> configs = GlobalSettings.GetConfigSearchPaths(ConfigurationLevel.Global);
         
-        if (!configs.Any())
-            return "Profile Directory/.gitconfig";
+        string basePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+
+        if (configs.Any())
+            basePath = configs.FirstOrDefault();
         
-        string configDir = configs.FirstOrDefault();
-        return Path.Combine(configDir, ".gitconfig");
+        return Path.Combine(basePath, ".gitconfig");
     }
 
-    public static void SetGlobalGitConfigPath(FileInfo fileInfo)
+    public static string GetOriginGitConfigPath()
     {
-        GlobalSettings.SetConfigSearchPaths(ConfigurationLevel.Global, fileInfo.Directory.FullName);
+        string basePath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        return Path.Combine(basePath, ".gitconfig");
+    }
+    
+    public static bool SetGlobalGitConfigPath(FileInfo fileInfo)
+    {
+        string globalPath = GetGlobalGitConfigPath();
+
+        try
+        {
+            fileInfo.CopyTo(globalPath, true);
+            return true;
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public static bool IsGlobalConfigAvailable()

@@ -4,6 +4,7 @@ using Profiler.Console.FileSystem;
 using Profiler.Shared.Classes;
 using Profiler.Shared.Enums;
 using Profiler.Shared.Serializable;
+using Profiler.Shared.Utils;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
@@ -35,8 +36,39 @@ public class ProfileManager
             .Build();
 
         this.ReadAndSetupProfiles();
+        this.CreateBackupCopy();
     }
 
+    private void CreateBackupCopy()
+    {
+        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, ".gitconfig");
+        
+        if (backupFilePresent)
+            return;
+
+        FileInfo gitConfig = new FileInfo(GitUtils.GetGlobalGitConfigPath());
+        
+        if (!gitConfig.Exists)
+            return;
+
+        this.FileSystemManager.CopyTo(EnumFileSystemFolder.Root, gitConfig, "/", ".gitconfig");
+    }
+
+    public bool RestoreBackup()
+    {
+        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, ".gitconfig");
+        
+        if (!backupFilePresent)
+            return false;
+
+        string originContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, ".gitconfig");
+        string originPath = GitUtils.GetOriginGitConfigPath();
+
+        File.WriteAllText(originPath, originContent);
+
+        return true;
+    }
+    
     private void ReadAndSetupProfiles()
     {
         foreach (ProfileEntry profileEntry in this.ProfileRegistry.ProfileEntries)

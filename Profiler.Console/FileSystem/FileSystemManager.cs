@@ -142,8 +142,8 @@ public class FileSystemManager
     
     private DirectoryInfo GetBaseDirectoryInfo()
     {
-        String userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
-        String configFolderName = ".config";
+        string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+        string configFolderName = ".config";
         
         return new DirectoryInfo(Path.Combine(userProfile, configFolderName));
     }
