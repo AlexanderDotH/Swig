@@ -5,9 +5,26 @@
         <TargetFramework>net8.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <PackageIcon>swig-logo.png</PackageIcon>
+        <PackageIcon>swig-squircle.png</PackageIcon>
         <AssemblyName>Swig.Console</AssemblyName>
         <RootNamespace>Swig.Console</RootNamespace>
+        <Title>Swig</Title>
+        <Description>A modern way to switch git configs</Description>
+        <Copyright>AlexanderDotH</Copyright>
+        <PackageProjectUrl>https://github.com/AlexanderDotH/Swig</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/AlexanderDotH/Swig/blob/master/LICENSE.md</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/AlexanderDotH/Swig</RepositoryUrl>
+        <RepositoryType>public</RepositoryType>
+        <PackageTags>swig</PackageTags>
+        <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+        <Company>AlexanderDotH</Company>
+        <Product>Swig</Product>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <NeutralLanguage>en</NeutralLanguage>
+        <AssemblyOriginatorKeyFile>certificate.snk</AssemblyOriginatorKeyFile>
+        <PublicSign>true</PublicSign>
+        <SignAssembly>true</SignAssembly>
     </PropertyGroup>
 
     <ItemGroup>
@@ -28,7 +45,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="swig-logo.png">
+      <None Update="swig-squircle.png">
         <Pack>True</Pack>
         <PackagePath></PackagePath>
       </None>
