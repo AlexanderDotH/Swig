@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/15187512-20eb-4128-a68a-61aa76b8ba08" alt="Swig Logo" width="150" height="150">
+  <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/4f33b57e-7cdf-4512-92ad-699620b3f6c1" alt="Swig Logo" width="150" height="150">
   <h1 align="center">Swig - The Swag Way to Switch Git Config</h1>
 </p>
 
