@@ -1,6 +1,6 @@
 <p align="center">
   <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/4f33b57e-7cdf-4512-92ad-699620b3f6c1" alt="Swig Logo" width="150" height="150">
-  <h1 align="center">Swig - The Swag Way to Switch Git Config</h1>
+  <h1 align="center">Swig - The Swag Way to Switch Git Configs</h1>
 </p>
 
 Swig is the coolest git config switcher out there, designed specifically for macOS! With Swig, you can easily change your git config right from your terminal using a single command. It's like having a personal stylist for your git config - making you look good without the hassle.
