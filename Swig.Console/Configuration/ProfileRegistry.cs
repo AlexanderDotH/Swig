@@ -9,7 +9,7 @@ namespace Swig.Console.Configuration;
 
 public class ProfileRegistry
 {
-    private List<ProfileEntry> _profileEntries;
+    private ProfileRegistryObject Registry { get; set; }
     private string ProfileConfigName { get; } = "profiles.yaml";
     
     private FileSystemManager FileSystemManager { get; set; }
@@ -29,23 +29,29 @@ public class ProfileRegistry
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
 
-        this._profileEntries = GetProfileEntries();
+        this.Registry = GetProfileEntries();
     }
     
-    private List<ProfileEntry> GetProfileEntries()
+    private ProfileRegistryObject GetProfileEntries()
     {
         if (!this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this.ProfileConfigName))
-            return this.UpdateRegistryOnDisk(new List<ProfileEntry>());
+            return this.UpdateRegistryOnDisk(new ProfileRegistryObject());
         
         try
         {
             string fileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, this.ProfileConfigName);
-            return this.Deserializer.Deserialize<List<ProfileEntry>>(fileContent);
+            return this.Deserializer.Deserialize<ProfileRegistryObject>(fileContent);
         }
         catch (Exception e)
         {
-            return UpdateRegistryOnDisk(new List<ProfileEntry>());
+            return UpdateRegistryOnDisk(new ProfileRegistryObject());
         }
+    }
+
+    public void SetSelectedProfile(Guid identifier)
+    {
+        this.Registry.Selected.Identifier = identifier;
+        this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
     public void AddAndWriteProfile(Profile profile)
@@ -55,34 +61,38 @@ public class ProfileRegistry
             Identifier = profile.Identifier
         };
         
-        this._profileEntries.Add(profileEntry);
-        
-        this._profileEntries = UpdateRegistryOnDisk(this._profileEntries);
+        this.Registry.ProfileEntries.Add(profileEntry);
+        this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
     public void RemoveAndWriteProfile(Profile profile)
     {
-        this._profileEntries.RemoveAll(p => p.Identifier.Equals(profile.Identifier));
-        this._profileEntries = UpdateRegistryOnDisk(this._profileEntries);
+        this.Registry.ProfileEntries.RemoveAll(p => p.Identifier.Equals(profile.Identifier));
+        this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
-    private List<ProfileEntry> UpdateRegistryOnDisk(List<ProfileEntry> profileEntries)
+    private ProfileRegistryObject UpdateRegistryOnDisk(ProfileRegistryObject profileRegistry)
     {
         try
         {
-            string serialized = this.Serializer.Serialize(profileEntries);
+            string serialized = this.Serializer.Serialize(profileRegistry);
             this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Root, ProfileConfigName, serialized);
-            return profileEntries;
+            return profileRegistry;
         }
         catch (Exception e)
         {
             // TODO: Output (Cannot create default profile)
-            return profileEntries;
+            return profileRegistry;
         }
     }
 
     public List<ProfileEntry> ProfileEntries
     {
-        get => this._profileEntries;
+        get => Registry.ProfileEntries;
+    }
+
+    public ProfileEntry CurrentProfileEntry
+    {
+        get => this.Registry.Selected;
     }
 }

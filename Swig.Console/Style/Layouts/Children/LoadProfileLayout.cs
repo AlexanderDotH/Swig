@@ -26,11 +26,25 @@ public class LoadProfileLayout : BaseChildLayout
         if (choice.SequenceEqual(":backhand_index_pointing_left: Go back"))
             DrawParent();
 
-        Profile profile = Swig.Instance.ProfileManager.GetProfileByName(choice);
-        GitUtils.SetGlobalGitConfigPath(new FileInfo(profile.GitConfigFile));
+        string gitConfigPath = GitUtils.GetGlobalGitConfigPath();
+        Profile currentProfile = Swig.Instance.ProfileManager.Current;
         
-        AnsiConsole.MarkupLine($"[mediumturquoise]Successfully[/] loaded profile {profile.Name}!");
-        System.Console.ReadKey();
+        if (Swig.Instance.ProfileManager.HasChanged(gitConfigPath, currentProfile))
+            new SyncProfileLayout(this, currentProfile).DrawLayout();
+        
+        try
+        {
+            Profile profile = Swig.Instance.ProfileManager.LoadProfile(choice);
+        
+            AnsiConsole.MarkupLine($"[mediumturquoise]Successfully[/] loaded profile {profile.Name}!");
+            System.Console.ReadKey();
+        }
+        catch (Exception e)
+        {
+            AnsiConsole.MarkupLine($"[red1]Cannot load profile {choice}, the profiles does not exist[/]");
+            System.Console.ReadKey();
+        }
+        
         DrawParent();
     }
 }

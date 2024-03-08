@@ -22,11 +22,9 @@ public class GitUtils
         return Path.Combine(basePath, ".gitconfig");
     }
 
-    public static List<KeyValuePair<string, string>> GetGitContent(string gitConfigPath)
+    public static List<KeyValuePair<string, string>> GetGitContent(FileInfo gitConfigPath)
     {
-        FileInfo gitConfigFileInfo = new FileInfo(gitConfigPath);
-        
-        Configuration configuration = Configuration.BuildFrom(gitConfigFileInfo.FullName);
+        Configuration configuration = Configuration.BuildFrom(gitConfigPath.FullName);
 
         IEnumerator<ConfigurationEntry<string>> entries = configuration
             .Where(t => t.Level.Equals(ConfigurationLevel.Local))

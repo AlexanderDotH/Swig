@@ -37,12 +37,22 @@ public class ViewProfilesModel : ILayoutModel
     private Table GetContentTable(Profile profile)
     {
         Table contentTable = new Table();
+
+        FileInfo gitConfigPathInfo = new FileInfo(profile.GitConfigFile);
+
+        if (!gitConfigPathInfo.Exists)
+        {
+            return new Table()
+                .AddColumns("Error")
+                .AddRow(new Markup("[red1]Cannot load gitconfig[/]"));
+        }
+        
         contentTable.BorderColor(new Color(95, 0, 255));
             
         contentTable.AddColumn("Key");
         contentTable.AddColumn("Value");
 
-        List<KeyValuePair<string, string>> gitContent = GitUtils.GetGitContent(profile.GitConfigFile);
+        List<KeyValuePair<string, string>> gitContent = GitUtils.GetGitContent(gitConfigPathInfo);
             
         foreach (var (key, value) in gitContent)
             contentTable.AddRow(key, value);

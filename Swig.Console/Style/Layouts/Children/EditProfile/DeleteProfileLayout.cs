@@ -30,7 +30,10 @@ public class DeleteProfileLayout : BaseChildLayout
         Swig.Instance.ProfileManager.DeleteProfile(this.Profile);
         
         AnsiConsole.Markup($"Successfully deleted profile [red1]{this.Profile.Name}[/]!");
-        
-        DrawParent();
+
+        if (this.Parent is EditProfileActionLayout layout)
+            layout.DrawParent();
+
+        return;
     }
 }

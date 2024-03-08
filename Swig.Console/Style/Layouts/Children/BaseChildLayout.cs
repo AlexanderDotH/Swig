@@ -4,7 +4,7 @@ namespace Swig.Console.Style.Layouts.Children;
 
 public abstract class BaseChildLayout : ILayout
 {
-    private ILayout Parent { get; set; }
+    public ILayout Parent { get; private set; }
     
     public BaseChildLayout(ILayout parent)
     {

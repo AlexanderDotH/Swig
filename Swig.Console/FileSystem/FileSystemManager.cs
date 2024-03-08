@@ -100,6 +100,24 @@ public class FileSystemManager
         return fileInfo.Exists;
     }
 
+    public string ReadFile(EnumFileSystemFolder fileSystemFolder, string directoryName, string fileName)
+    {
+        DirectoryInfo folderPath = CreateDirectory(fileSystemFolder, directoryName);
+        FileInfo fileInfo = FileUtils.CombineFile(folderPath, fileName);
+
+        if (!fileInfo.Exists)
+            return string.Empty;
+
+        try
+        {
+            return File.ReadAllText(fileInfo.FullName);
+        }
+        catch (Exception e)
+        {
+            throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
+        }
+    }
+    
     public string ReadFile(EnumFileSystemFolder fileSystemFolder, string fileName)
     {
         DirectoryInfo folderPath = GetFolder(fileSystemFolder);
@@ -114,7 +132,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
-            throw new FileSystemException(EnumFileSystemExceptionType.CannotWriteFile);
+            throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
         }
     }
 
