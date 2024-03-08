@@ -13,7 +13,7 @@ Swig is the coolest git config switcher out there, designed specifically for mac
 
 ## 📸 Preview
 <p align="left">
-  <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/1ea11a6e-b253-4208-b390-3a73d7e0c2b7" alt="Swig Welcome Screen" width="40%">
+  <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/1ea11a6e-b253-4208-b390-3a73d7e0c2b7" alt="Swig Welcome Screen" width="60%">
 </p>
 
 
