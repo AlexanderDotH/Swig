@@ -32,7 +32,8 @@ public class ProfileRegistry
             .IgnoreUnmatchedProperties()
             .Build();
 
-        this.Registry = GetProfileEntries();
+        this.Registry = 
+            GetProfileEntries();
     }
     
     private ProfileRegistryObject GetProfileEntries()
@@ -47,13 +48,13 @@ public class ProfileRegistry
         }
         catch (Exception e)
         {
-            return UpdateRegistryOnDisk(new ProfileRegistryObject());
+            return new ProfileRegistryObject();
         }
     }
 
     public void SetSelectedProfile(Guid identifier)
     {
-        this.Registry.Selected.Identifier = identifier;
+        this.Registry.Selected = identifier;
         this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
@@ -94,7 +95,7 @@ public class ProfileRegistry
         get => Registry.ProfileEntries;
     }
 
-    public ProfileEntry CurrentProfileEntry
+    public Guid Selected
     {
         get => this.Registry.Selected;
     }

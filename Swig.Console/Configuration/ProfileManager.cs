@@ -112,8 +112,7 @@ public class ProfileManager
             this._profiles.Add(profile);
         }
         
-        this.Current = GetProfileById(this.ProfileRegistry.CurrentProfileEntry.Identifier);
-        
+        this.Current = GetProfileById(this.ProfileRegistry.Selected);
     }
 
     public bool DoesProfileExist(string profileName)
@@ -144,8 +143,15 @@ public class ProfileManager
     {
         if (identifier == Guid.Empty)
             return null;
-        
-        return this._profiles.First(p => p.Identifier.Equals(identifier));
+
+        try
+        {
+            return this._profiles.First(p => p.Identifier.Equals(identifier));
+        }
+        catch (Exception e)
+        {
+            return null;
+        }
     }
 
     public void DeleteProfile(Profile profile)
