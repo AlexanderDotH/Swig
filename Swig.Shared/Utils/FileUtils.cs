@@ -16,4 +16,14 @@ public static class FileUtils
         string combinded = Path.Combine(directory.FullName, fileName);
         return new FileInfo(combinded);
     }
+
+    public static string ReadContent(string filePath) => ReadContent(new FileInfo(filePath));
+    
+    public static string ReadContent(FileInfo fileInfo)
+    {
+        if (!fileInfo.Exists)
+            throw new FileNotFoundException($"Cannot find file {fileInfo.FullName}");
+
+        return File.ReadAllText(fileInfo.FullName);
+    }
 }

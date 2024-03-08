@@ -13,6 +13,8 @@ public class ProfileManager
 {
     private List<Profile> _profiles;
 
+    public Profile Current { get; private set; }
+    
     private ProfileRegistry ProfileRegistry { get; set; }
     private FileSystemManager FileSystemManager { get; set; }
 
@@ -53,6 +55,36 @@ public class ProfileManager
         this.FileSystemManager.CopyTo(EnumFileSystemFolder.Root, gitConfig, "/", ".gitconfig");
     }
 
+    public bool HasChanged(string gitConfigPath, Profile profile)
+    {
+        try
+        {
+            string profileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, profile.Identifier.ToString(),".gitconfig");
+            string gitConfigContent = FileUtils.ReadContent(gitConfigPath);
+
+            return !profileContent.SequenceEqual(gitConfigContent);
+        }
+        catch (Exception e)
+        {
+            return false;
+        }
+    }
+
+    public void SyncGitConfig(string gitConfigPath, Profile profile)
+    {
+        FileInfo gitConfigInfo = new FileInfo(gitConfigPath);
+
+        if (!gitConfigInfo.Exists)
+            throw new FileNotFoundException("Cannot find gitconfig");
+
+        FileInfo profileInfo = new FileInfo(profile.GitConfigFile);
+        
+        if (!profileInfo.Exists)
+            throw new FileNotFoundException("Cannot find gitconfig inside the profile folder");
+
+        gitConfigInfo.CopyTo(profileInfo.FullName, true);
+    }
+    
     public bool RestoreBackup()
     {
         bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, ".gitconfig");
@@ -79,6 +111,9 @@ public class ProfileManager
 
             this._profiles.Add(profile);
         }
+        
+        this.Current = GetProfileById(this.ProfileRegistry.CurrentProfileEntry.Identifier);
+        
     }
 
     public bool DoesProfileExist(string profileName)
@@ -86,9 +121,31 @@ public class ProfileManager
         return this._profiles.Any(p => p.Name.Equals(profileName));
     }
 
+    public Profile LoadProfile(string profileName)
+    {
+        if (!DoesProfileExist(profileName))
+            throw new Exception("Cannot find profile");
+        
+        Profile profile = Swig.Instance.ProfileManager.GetProfileByName(profileName);
+        GitUtils.SetGlobalGitConfigPath(new FileInfo(profile.GitConfigFile));
+
+        Current = profile;
+        this.ProfileRegistry.SetSelectedProfile(profile.Identifier);
+        
+        return profile;
+    }
+    
     public Profile GetProfileByName(string profileName)
     {
         return this._profiles.First(p => p.Name.Equals(profileName));
+    }
+    
+    public Profile GetProfileById(Guid identifier)
+    {
+        if (identifier == Guid.Empty)
+            return null;
+        
+        return this._profiles.First(p => p.Identifier.Equals(identifier));
     }
 
     public void DeleteProfile(Profile profile)

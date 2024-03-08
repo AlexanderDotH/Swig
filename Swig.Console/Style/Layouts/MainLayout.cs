@@ -1,15 +1,24 @@
 using Spectre.Console;
 using Swig.Console.Style.Layouts.Children;
 using Swig.Console.Style.Layouts.Children.EditProfile;
+using Swig.Console.Style.Models;
 
 namespace Swig.Console.Style.Layouts;
 
 public class MainLayout : ILayout
 {
+    private MainLayoutModel Model { get; set; }
+    
+    public MainLayout()
+    {
+        this.Model = new MainLayoutModel();
+    }
+    
     public void DrawLayout()
     {
+        
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
-            .Title("[dodgerblue1]W[/][blueviolet]e[/][slateblue3_1]l[/][royalblue1]c[/][lightslateblue]o[/][mediumpurple]m[/][slateblue1]e[/] to Swig, what do [mediumturquoise]you[/] want to do?")
+            .Title(this.Model.GetTitle())
             .AddChoices("View", "Load", "Create", "Edit", "Restore", "Exit");
 
         string choice = AnsiConsole.Prompt(actionSelectonPrompt);
