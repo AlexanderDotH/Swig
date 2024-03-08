@@ -1,9 +1,11 @@
+using Spectre.Console;
 using Swig.Console.FileSystem;
 using Swig.Shared.Classes;
 using Swig.Shared.Enums;
 using Swig.Shared.Serializable;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Configuration;
 
@@ -27,6 +29,7 @@ public class ProfileRegistry
 
         Deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
+            .IgnoreUnmatchedProperties()
             .Build();
 
         this.Registry = GetProfileEntries();
