@@ -29,17 +29,17 @@ Ready to add some swag to your git config management? Follow these steps:
 
 ### zsh
 ```bash
-sudo curl -o ~/Applications/Swig.Console "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig.Console && echo 'alias swig="~/Applications/Swig.Console"' >> ~/.zshrc && source ~/.zshrc
+sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.zshrc && source ~/.zshrc
 ```
 
 ### bash
 ```bash
-sudo curl -o ~/Applications/Swig.Console "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig.Console && echo 'alias swig="~/Applications/Swig.Console"' >> ~/.bashrc && source ~/.bashrc
+sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.bashrc && source ~/.bashrc
 ```
 
 ### System wide
 ```bash
-sudo curl -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
+sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
 ```
 
 ## 🤝 Contributing
