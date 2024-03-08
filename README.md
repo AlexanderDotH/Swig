@@ -3,8 +3,6 @@
   <h1 align="center">Swig - The Swag Way to Switch Git Config</h1>
 </p>
 
-## 😎 What's Swig?
-
 Swig is the coolest git config switcher out there, designed specifically for macOS! With Swig, you can easily change your git config right from your terminal using a single command. It's like having a personal stylist for your git config - making you look good without the hassle.
 
 ## ✨ Features
@@ -13,26 +11,36 @@ Swig is the coolest git config switcher out there, designed specifically for mac
 - User-friendly and colorful UI that'll make your terminal feel like a party
 - Saves you time and effort, so you can focus on what matters - your code
 
-## 📸 Screenshots
+## 📸 Preview
+<p align="left">
+  <img src="https://github.com/AlexanderDotH/Swig/assets/20642291/1ea11a6e-b253-4208-b390-3a73d7e0c2b7" alt="Swig Welcome Screen" width="40%">
+</p>
 
-[Insert screenshots here showcasing the UI and usage]
 
 ## 🚀 Getting Started
 
 Ready to add some swag to your git config management? Follow these steps:
 
-1. Install Swig using [insert installation instructions]
+1. Install Swig using:
 2. Run `swig` in your terminal and let the magic happen
 3. Enjoy seamless git config switching and impress your colleagues with your new-found efficiency
 
+## 🛠️ Install Swig
+
+### zsh
+```bash
+sudo curl -o ~/Applications/Swig.Console "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig.Console && echo 'alias swig="~/Applications/Swig.Console"' >> ~/.zshrc && source ~/.zshrc
+```
+
+### bash
+```bash
+sudo curl -o ~/Applications/Swig.Console "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig.Console && echo 'alias swig="~/Applications/Swig.Console"' >> ~/.bashrc && source ~/.bashrc
+```
+
+### System wide
+```bash
+sudo curl -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
+```
+
 ## 🤝 Contributing
-
 We're always looking for cool cats to help make Swig even better. If you've got ideas, bug reports, or just want to show some love, feel free to open an issue or submit a pull request. Let's make git config management fun again!
-
-## 📃 License
-
-Swig is licensed under the [insert license]. So go ahead, use it, share it, and make your git experience a whole lot cooler.
-
----
-
-Made with ❤️ and a sprinkle of 🌟 by the Swig team.
