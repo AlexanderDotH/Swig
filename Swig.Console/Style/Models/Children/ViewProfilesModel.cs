@@ -1,4 +1,6 @@
+using Microsoft.Extensions.Logging;
 using Spectre.Console;
+using Spectre.Console.Extensions.Logging;
 using Swig.Shared.Utils;
 using Profile = Swig.Shared.Classes.Profile;
 
@@ -6,12 +8,18 @@ namespace Swig.Console.Style.Models.Children;
 
 public class ViewProfilesModel : ILayoutModel
 {
+    private readonly ILogger _logger = 
+        new SpectreConsoleLogger("ViewProfilesModel", Swig.Instance.LoggerConfiguration);
+
     public Table GetProfileTable()
     {
         List<Profile> profiles = Swig.Instance.ProfileManager.Profiles;
 
         if (!profiles.Any())
+        {
+            _logger.LogError($"Cannot find any profiles (Entries present {profiles.Count})");
             return null;
+        }
         
         Table table = new Table();
         table.Border = TableBorder.Square;
@@ -24,9 +32,13 @@ public class ViewProfilesModel : ILayoutModel
         {
             Profile currentProfile = profiles[i];
 
+            AnsiConsole.MarkupLine($"Loaded profile {currentProfile.Name}");
+            
             Markup currentNumber = new Markup(i.ToString());
             Markup currentName = new Markup(currentProfile.Name);
             Table currentTable = GetContentTable(currentProfile);
+            
+            _logger.LogDebug($"Added Table entry No: {currentNumber}, Name: {currentName}, Object: {currentTable}");
             
             table.AddRow(currentNumber, currentName, currentTable);
         }

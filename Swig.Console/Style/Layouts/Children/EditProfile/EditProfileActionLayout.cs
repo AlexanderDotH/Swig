@@ -21,7 +21,7 @@ public class EditProfileActionLayout : BaseChildLayout
         string openLabel = this.Model.GetOsSpecificOpenLabel();
         
         SelectionPrompt<string> editOptionSelectionPrompt = new SelectionPrompt<string>()
-            .Title("Please pick a [mediumturquoise]profile[/]")
+            .Title($"What do you want to do with [mediumturquoise]{this.Profile.Name}[/]?")
             .AddChoices(":backhand_index_pointing_left: Go back", "Rename", openLabel, "Delete");
 
         string choice = AnsiConsole.Prompt(editOptionSelectionPrompt);

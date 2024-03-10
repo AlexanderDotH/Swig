@@ -1,8 +1,14 @@
+using System.Globalization;
+using Microsoft.Extensions.Logging;
 using Spectre.Console;
+using Spectre.Console.Extensions.Logging;
 using Swig.Console.FileSystem;
+using Swig.Console.Helper;
 using Swig.Shared.Classes;
 using Swig.Shared.Enums;
 using Swig.Shared.Serializable;
+using YamlDotNet.Core;
+using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using Profile = Swig.Shared.Classes.Profile;
@@ -19,6 +25,9 @@ public class ProfileRegistry
     private ISerializer Serializer { get; set; }
     private IDeserializer Deserializer { get; set; }
 
+    private readonly ILogger _logger = 
+        new SpectreConsoleLogger("Profile Registry", Swig.Instance.LoggerConfiguration);
+    
     public ProfileRegistry(FileSystemManager fileSystemManager)
     {
         this.FileSystemManager = fileSystemManager;
@@ -29,29 +38,63 @@ public class ProfileRegistry
 
         Deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .IgnoreUnmatchedProperties()
             .Build();
 
         this.Registry = 
             GetProfileEntries();
+        
+        this.Registry.Entries?.ForEach(e => 
+            _logger.LogDebug($"Loaded profile id: {e.Identifier}"));
+        
+        _logger.LogDebug("Loaded ctor");
     }
     
     private ProfileRegistryObject GetProfileEntries()
     {
+        _logger.LogDebug("Begin loading registry");
+        
         if (!this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this.ProfileConfigName))
+        {
+            _logger.LogWarning($"Registry file is not present and created an new empty one");
+            _logger.LogDebug("Loaded registry");
             return this.UpdateRegistryOnDisk(new ProfileRegistryObject());
+        }
         
         try
         {
             string fileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, this.ProfileConfigName);
+            MigrateFromOtherVersion(fileContent);
+
+            _logger.LogDebug("Loaded registry");
             return this.Deserializer.Deserialize<ProfileRegistryObject>(fileContent);
         }
         catch (Exception e)
         {
+            _logger.LogError($"Failed to parse registry file");
+            AnsiConsole.WriteException(e);
+
+            _logger.LogDebug("Loaded registry, it will use a new registry object for now");
             return new ProfileRegistryObject();
         }
     }
 
+    private ProfileRegistryObject MigrateFromOtherVersion(string content)
+    {
+        double version = -1.0d;
+
+        YamlHelper yamlHelper = new YamlHelper(content);
+        
+        if (yamlHelper.HasField("version"))
+        {
+            
+            _logger.LogDebug("Found version tag");
+        }
+
+        return null;
+    }
+
+    
+    
     public void SetSelectedProfile(Guid identifier)
     {
         this.Registry.Selected = identifier;
@@ -65,13 +108,13 @@ public class ProfileRegistry
             Identifier = profile.Identifier
         };
         
-        this.Registry.ProfileEntries.Add(profileEntry);
+        this.Registry.Entries.Add(profileEntry);
         this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
     public void RemoveAndWriteProfile(Profile profile)
     {
-        this.Registry.ProfileEntries.RemoveAll(p => p.Identifier.Equals(profile.Identifier));
+        this.Registry.Entries.RemoveAll(p => p.Identifier.Equals(profile.Identifier));
         this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
@@ -92,7 +135,7 @@ public class ProfileRegistry
 
     public List<ProfileEntry> ProfileEntries
     {
-        get => Registry.ProfileEntries;
+        get => Registry.Entries;
     }
 
     public Guid Selected

@@ -1,3 +1,6 @@
+using Microsoft.Extensions.Logging;
+using Spectre.Console;
+using Spectre.Console.Extensions.Logging;
 using Swig.Shared.Enums;
 using Swig.Shared.Exceptions;
 using Swig.Shared.Utils;
@@ -9,9 +12,15 @@ public class FileSystemManager
     private String WorkingFolder { get; } = "Swig";
     public DirectoryInfo WorkingDirectory { get; private set; }
     
+    private readonly ILogger _logger = 
+        new SpectreConsoleLogger("FileSystemManager", Swig.Instance.LoggerConfiguration);
+    
     public FileSystemManager()
     {
         WorkingDirectory = SetupAndConfigureFs(GetBaseDirectoryInfo(), WorkingFolder);
+        
+        _logger.LogInformation($"Working directory is set up {WorkingDirectory.FullName}");
+        _logger.LogDebug("Loaded ctor");
     }
     
     private DirectoryInfo SetupAndConfigureFs(DirectoryInfo baseDirectory, string workingFolder)
@@ -48,13 +57,16 @@ public class FileSystemManager
     {
         DirectoryInfo folderPath = FileUtils.CombineDirectories(GetFolder(fileSystemFolder), directoryName);
         FileInfo destination = FileUtils.CombineFile(folderPath, fileName);
-        
+
         try
         {
             destination.Delete();
             return true;
         }
-        catch (Exception e) { }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Cannot delete file: {destination.FullName}");
+        }
 
         return false;
     }
@@ -62,13 +74,16 @@ public class FileSystemManager
     public bool DeleteDirectory(EnumFileSystemFolder fileSystemFolder, string directoryName)
     {
         DirectoryInfo folderPath = FileUtils.CombineDirectories(GetFolder(fileSystemFolder), directoryName);
-        
+
         try
         {
             folderPath.Delete();
             return true;
         }
-        catch (Exception e) { }
+        catch (Exception e)
+        {
+            _logger.LogError(e, $"Cannot delete directory: {folderPath.FullName}");
+        }
 
         return false;
     }
@@ -114,6 +129,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
+            _logger.LogError(e, $"Could not read from file: {fileInfo.FullName}");
             throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
         }
     }
@@ -132,6 +148,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
+            _logger.LogError(e, $"Could not read from file: {fileInfo.FullName}");
             throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
         }
     }
@@ -154,6 +171,7 @@ public class FileSystemManager
                 return FileUtils.CombineDirectories(WorkingDirectory, "Profiles");
         }
 
+        _logger.LogWarning($"Could not find folder type {fileSystemFolder.ToString()}");
         throw new FileSystemException(EnumFileSystemExceptionType.FolderNotFound);
     }
     

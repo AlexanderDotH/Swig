@@ -4,7 +4,13 @@ namespace Swig.Shared.Classes;
 
 public class ProfileRegistryObject
 {
-    public Guid Selected { get; set; } = Guid.Empty;
-    public List<ProfileEntry> ProfileEntries { get; set; } = new List<ProfileEntry>();
-    public double Version { get; set; } = 1.1;
+    public Guid Selected { get; set; }
+    public List<ProfileEntry> Entries { get; set; }
+    public double Version = 1.1d;
+
+    public ProfileRegistryObject()
+    {
+        Selected = Guid.Empty;
+        Entries = new List<ProfileEntry>();
+    }
 }

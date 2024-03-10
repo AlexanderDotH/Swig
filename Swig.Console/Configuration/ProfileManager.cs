@@ -1,11 +1,14 @@
+using Microsoft.Extensions.Logging;
+using Spectre.Console;
+using Spectre.Console.Extensions.Logging;
 using Swig.Console.Exceptions;
 using Swig.Console.FileSystem;
-using Swig.Shared.Classes;
 using Swig.Shared.Enums;
 using Swig.Shared.Serializable;
 using Swig.Shared.Utils;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
+using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Configuration;
 
@@ -20,6 +23,9 @@ public class ProfileManager
 
     private ISerializer Serializer { get; set; }
     private IDeserializer Deserializer { get; set; }
+
+    private readonly ILogger _logger = 
+        new SpectreConsoleLogger("Profile Manager", Swig.Instance.LoggerConfiguration);
 
     public ProfileManager(ProfileRegistry profileRegistry, FileSystemManager fileSystemManager)
     {
@@ -38,6 +44,8 @@ public class ProfileManager
 
         this.ReadAndSetupProfiles();
         this.CreateBackupCopy();
+        
+        _logger.LogDebug("Loaded ctor");
     }
 
     private void CreateBackupCopy()
@@ -102,17 +110,23 @@ public class ProfileManager
     
     private void ReadAndSetupProfiles()
     {
+        _logger.LogDebug("Begin loading profiles");
         foreach (ProfileEntry profileEntry in this.ProfileRegistry.ProfileEntries)
         {
             Profile profile;
 
             if (!TryGetProfile(profileEntry.Identifier, out profile))
+            {
+                _logger.LogWarning($"Skipped profile {profileEntry.Identifier} could not parse data");
                 continue;
+            }
 
+            _logger.LogDebug($"Added profile {profile.Name} with id: {profile.Identifier}");
             this._profiles.Add(profile);
         }
         
         this.Current = GetProfileById(this.ProfileRegistry.Selected);
+        _logger.LogDebug($"Set current profile {this.ProfileRegistry.Selected}");
     }
 
     public bool DoesProfileExist(string profileName)
@@ -123,7 +137,10 @@ public class ProfileManager
     public Profile LoadProfile(string profileName)
     {
         if (!DoesProfileExist(profileName))
+        {
+            _logger.LogWarning($"Profile: {profileName} does not exists");
             throw new Exception("Cannot find profile");
+        }
         
         Profile profile = Swig.Instance.ProfileManager.GetProfileByName(profileName);
         GitUtils.SetGlobalGitConfigPath(new FileInfo(profile.GitConfigFile));
@@ -142,7 +159,10 @@ public class ProfileManager
     public Profile GetProfileById(Guid identifier)
     {
         if (identifier == Guid.Empty)
+        {
+            _logger.LogWarning($"Ignored empty profile id");
             return null;
+        }
 
         try
         {
@@ -173,8 +193,9 @@ public class ProfileManager
             throw new ProfileException("Cannot delete profile directory");
 
         this._profiles.Remove(profile);
-        
         this.ProfileRegistry.RemoveAndWriteProfile(profile);
+        
+        _logger.LogDebug($"Deleted profile {profile.Name} with id: {profile.Identifier}");
     }
 
     public void RenameProfile(Profile profile, string newName)
@@ -210,6 +231,7 @@ public class ProfileManager
         profile.GitConfigFile = newGitConfigPath.FullName;
 
         this.WriteProfile(profile, true);
+        _logger.LogDebug($"Created profile {profileName}");
     }
 
     private bool TryGetProfile(Guid profileId, out Profile profile)
@@ -235,11 +257,16 @@ public class ProfileManager
     {
         string profileContent =
             this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, $"{identifier}/{identifier}.yaml");
+        
+        _logger.LogDebug($"Read profile {identifier}");
+        
         return Deserializer.Deserialize<Profile>(profileContent);
     }
 
     private void WriteProfile(Profile profile, bool registerProfile = true)
     {
+        _logger.LogDebug($"Wrote to profile {profile.Identifier}");
+        
         string profileContent = this.Serializer.Serialize(profile);
 
         DirectoryInfo workSpace = this.PrepareWorkspace(profile);
