@@ -12,7 +12,7 @@ public class OsUtils
             ProcessStartInfo processStartInfo = new ProcessStartInfo();
             processStartInfo.Arguments = directoryInfo.FullName;
             processStartInfo.UseShellExecute = true;
-            processStartInfo.FileName = "open";
+            processStartInfo.FileName = "/usr/bin/open";
             
             Process.Start(processStartInfo);
         } 
