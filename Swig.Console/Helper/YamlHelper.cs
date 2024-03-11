@@ -6,7 +6,7 @@ namespace Swig.Console.Helper;
 
 public class YamlHelper
 {
-    private YamlStream _yamlStream;
+    private readonly YamlStream _yamlStream;
     
     public YamlHelper(string yaml)
     {
@@ -53,13 +53,8 @@ public class YamlHelper
         {
             foreach (KeyValuePair<YamlNode, YamlNode> keyValue in mappingNode)
             {
-                if (keyValue.Key is YamlScalarNode scalarKey)
-                {
-                    if (scalarKey.Value.Equals(fieldName))
-                    {
-                        return keyValue.Value;
-                    }
-                }
+                if (keyValue.Key is YamlScalarNode scalarKey && scalarKey.Value.Equals(fieldName))
+                    return keyValue.Value;
             }
         }
         

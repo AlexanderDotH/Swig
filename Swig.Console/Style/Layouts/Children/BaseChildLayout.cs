@@ -4,11 +4,11 @@ namespace Swig.Console.Style.Layouts.Children;
 
 public abstract class BaseChildLayout : ILayout
 {
-    public ILayout Parent { get; private set; }
+    protected ILayout Parent { get; private set; }
     
-    public BaseChildLayout(ILayout parent)
+    protected BaseChildLayout(ILayout parent)
     {
-        Parent = parent;
+        this.Parent = parent;
     }
 
     public void DrawParent()

@@ -20,6 +20,10 @@ public class Swig
     
     public Swig(params string[] args)
     {
+        #pragma warning disable S3010
+        _swigInstance = this;
+        #pragma warning restore S3010
+        
         this.Args = args;
         
         SpectreConsoleLoggerConfiguration loggerConfiguration = new SpectreConsoleLoggerConfiguration();
@@ -28,8 +32,6 @@ public class Swig
         
         loggerConfiguration.LogLevel = args.Contains("--debug") ? LogLevel.Debug : LogLevel.None;
         LoggerConfiguration = loggerConfiguration;
-        
-        _swigInstance = this;
         
         FileSystemManager = new FileSystemManager();
         ProfileRegistry = new ProfileRegistry(this.FileSystemManager);
