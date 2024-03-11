@@ -112,22 +112,23 @@ public class ProfileManager
     private void ReadAndSetupProfiles()
     {
         _logger.LogDebug("Begin loading profiles");
-        foreach (ProfileEntry profileEntry in this.ProfileRegistry.ProfileEntries)
+        
+        foreach (Guid identifier in this.ProfileRegistry.ProfileEntries.Select(p => p.Identifier))
         {
             Profile profile;
 
-            if (!TryGetProfile(profileEntry.Identifier, out profile))
+            if (!TryGetProfile(identifier, out profile))
             {
-                _logger.LogWarning($"Skipped profile {profileEntry.Identifier} could not parse data");
+                _logger.LogWarning("Skipped profile {identifier} could not parse data", identifier);
                 continue;
             }
 
-            _logger.LogDebug($"Added profile {profile.Name} with id: {profile.Identifier}");
+            _logger.LogDebug("Added profile {name} with id: {identifier}", profile.Name, profile.Identifier);
             this._profiles.Add(profile);
         }
         
         this.Current = GetProfileById(this.ProfileRegistry.Selected);
-        _logger.LogDebug($"Set current profile {this.ProfileRegistry.Selected}");
+        _logger.LogDebug("Set current profile {selected}", this.ProfileRegistry.Selected);
     }
 
     public bool DoesProfileExist(string profileName)
@@ -139,7 +140,7 @@ public class ProfileManager
     {
         if (!DoesProfileExist(profileName))
         {
-            _logger.LogWarning($"Profile: {profileName} does not exists");
+            _logger.LogWarning("Profile: {name} does not exists", profileName);
             throw new ProfileException("Cannot find profile");
         }
         
@@ -161,7 +162,7 @@ public class ProfileManager
     {
         if (identifier == Guid.Empty)
         {
-            _logger.LogWarning($"Ignored empty profile id");
+            _logger.LogWarning("Ignored empty profile id");
             return null;
         }
 
@@ -196,7 +197,7 @@ public class ProfileManager
         this._profiles.Remove(profile);
         this.ProfileRegistry.RemoveAndWriteProfile(profile);
         
-        _logger.LogDebug($"Deleted profile {profile.Name} with id: {profile.Identifier}");
+        _logger.LogDebug("Deleted profile {name} with id: {identifier}", profile.Name, profile.Identifier);
     }
 
     public void RenameProfile(Profile profile, string newName)
@@ -232,7 +233,7 @@ public class ProfileManager
         profile.GitConfigFile = newGitConfigPath.FullName;
 
         this.WriteProfile(profile, true);
-        _logger.LogDebug($"Created profile {profileName}");
+        _logger.LogDebug("Created profile {name}", profileName);
     }
 
     private bool TryGetProfile(Guid profileId, out Profile profile)
@@ -265,14 +266,14 @@ public class ProfileManager
                 identifier.ToString(),
                 $"{identifier}.yaml");
         
-        _logger.LogDebug($"Read profile {identifier}");
+        _logger.LogDebug("Read profile {identifier}", identifier);
         
         return Deserializer.Deserialize<Profile>(profileContent);
     }
 
     private void WriteProfile(Profile profile, bool registerProfile = true)
     {
-        _logger.LogDebug($"Wrote to profile {profile.Identifier}");
+        _logger.LogDebug("Wrote to profile {identifier}", profile.Identifier);
         
         string profileContent = this.Serializer.Serialize(profile);
 

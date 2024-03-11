@@ -19,7 +19,7 @@ public class FileSystemManager
     {
         WorkingDirectory = SetupAndConfigureFs(GetBaseDirectoryInfo(), WorkingFolder);
         
-        _logger.LogInformation($"Working directory is set up {WorkingDirectory.FullName}");
+        _logger.LogInformation("Working directory is set up {directory}", WorkingDirectory.FullName);
         _logger.LogDebug("Loaded ctor");
     }
     
@@ -65,7 +65,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Cannot delete file: {destination.FullName}");
+            _logger.LogError(e, "Cannot delete file: {filepath}", destination.FullName);
         }
 
         return false;
@@ -82,7 +82,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Cannot delete directory: {folderPath.FullName}");
+            _logger.LogError(e, "Cannot delete directory: {folderpath}", folderPath.FullName);
         }
 
         return false;
@@ -137,7 +137,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Could not read from file: {fileInfo.FullName}");
+            _logger.LogError(e, "Could not read from file: {filepath}", fileInfo.FullName);
             throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
         }
     }
@@ -156,7 +156,7 @@ public class FileSystemManager
         }
         catch (Exception e)
         {
-            _logger.LogError(e, $"Could not read from file: {fileInfo.FullName}");
+            _logger.LogError(e, "Could not read from file: {filepath}", fileInfo.FullName);
             throw new FileSystemException(EnumFileSystemExceptionType.CannotReadFile);
         }
     }
@@ -179,7 +179,7 @@ public class FileSystemManager
                 return FileUtils.CombineDirectories(WorkingDirectory, "Profiles");
         }
 
-        _logger.LogWarning($"Could not find folder type {fileSystemFolder.ToString()}");
+        _logger.LogWarning("Could not find folder type {folder}", fileSystemFolder.ToString());
         throw new FileSystemException(EnumFileSystemExceptionType.FolderNotFound);
     }
     
