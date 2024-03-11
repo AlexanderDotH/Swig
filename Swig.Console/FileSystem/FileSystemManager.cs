@@ -13,7 +13,7 @@ public class FileSystemManager
     public DirectoryInfo WorkingDirectory { get; private set; }
     
     private readonly ILogger _logger = 
-        new SpectreConsoleLogger("FileSystemManager", Swig.Instance.LoggerConfiguration);
+        new SpectreInlineLogger("FileSystemManager", Swig.Instance.LoggerConfiguration);
     
     public FileSystemManager()
     {
@@ -110,6 +110,14 @@ public class FileSystemManager
     public bool IsFilePresent(EnumFileSystemFolder fileSystemFolder, string fileName)
     {
         DirectoryInfo folderPath = GetFolder(fileSystemFolder);
+        FileInfo fileInfo = FileUtils.CombineFile(folderPath, fileName);
+
+        return fileInfo.Exists;
+    }
+    
+    public bool IsFilePresent(EnumFileSystemFolder fileSystemFolder, string directoryName, string fileName)
+    {
+        DirectoryInfo folderPath = CreateDirectory(fileSystemFolder, directoryName);
         FileInfo fileInfo = FileUtils.CombineFile(folderPath, fileName);
 
         return fileInfo.Exists;

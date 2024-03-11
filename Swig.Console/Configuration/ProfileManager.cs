@@ -1,9 +1,9 @@
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using Spectre.Console.Extensions.Logging;
-using Swig.Console.Exceptions;
 using Swig.Console.FileSystem;
 using Swig.Shared.Enums;
+using Swig.Shared.Exceptions;
 using Swig.Shared.Serializable;
 using Swig.Shared.Utils;
 using YamlDotNet.Serialization;
@@ -25,7 +25,7 @@ public class ProfileManager
     private IDeserializer Deserializer { get; set; }
 
     private readonly ILogger _logger = 
-        new SpectreConsoleLogger("Profile Manager", Swig.Instance.LoggerConfiguration);
+        new SpectreInlineLogger("Profile Manager", Swig.Instance.LoggerConfiguration);
 
     public ProfileManager(ProfileRegistry profileRegistry, FileSystemManager fileSystemManager)
     {
@@ -255,8 +255,14 @@ public class ProfileManager
 
     private Profile ReadProfile(Guid identifier)
     {
-        string profileContent =
-            this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, $"{identifier}/{identifier}.yaml");
+        if (!this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Profiles, identifier.ToString(),
+                $"{identifier}.yaml"))
+            throw new ProfileException("Profile does not exist on disk");
+        
+        string profileContent = this.FileSystemManager.ReadFile(
+                EnumFileSystemFolder.Profiles, 
+                identifier.ToString(),
+                $"{identifier}.yaml");
         
         _logger.LogDebug($"Read profile {identifier}");
         

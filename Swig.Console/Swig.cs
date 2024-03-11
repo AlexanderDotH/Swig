@@ -23,6 +23,7 @@ public class Swig
         SpectreConsoleLoggerConfiguration loggerConfiguration = new SpectreConsoleLoggerConfiguration();
         loggerConfiguration.IncludeEventId = true;
         loggerConfiguration.IncludePrefix = true;
+        
         loggerConfiguration.LogLevel = LogLevel.Debug;
         LoggerConfiguration = loggerConfiguration;
         

@@ -1,4 +1,4 @@
-namespace Swig.Console.Exceptions;
+namespace Swig.Shared.Exceptions;
 
 public class ProfileException : Exception
 {

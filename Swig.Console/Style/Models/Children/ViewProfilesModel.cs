@@ -9,7 +9,7 @@ namespace Swig.Console.Style.Models.Children;
 public class ViewProfilesModel : ILayoutModel
 {
     private readonly ILogger _logger = 
-        new SpectreConsoleLogger("ViewProfilesModel", Swig.Instance.LoggerConfiguration);
+        new SpectreInlineLogger("ViewProfilesModel", Swig.Instance.LoggerConfiguration);
 
     public Table GetProfileTable()
     {

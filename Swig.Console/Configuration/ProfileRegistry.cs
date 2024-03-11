@@ -26,7 +26,7 @@ public class ProfileRegistry
     private IDeserializer Deserializer { get; set; }
 
     private readonly ILogger _logger = 
-        new SpectreConsoleLogger("Profile Registry", Swig.Instance.LoggerConfiguration);
+        new SpectreInlineLogger("Profile Registry", Swig.Instance.LoggerConfiguration);
     
     public ProfileRegistry(FileSystemManager fileSystemManager)
     {
@@ -44,7 +44,7 @@ public class ProfileRegistry
             GetProfileEntries();
         
         this.Registry.Entries?.ForEach(e => 
-            _logger.LogDebug($"Loaded profile id: {e.Identifier}"));
+            _logger.LogDebug($"Found profile id: {e.Identifier}"));
         
         _logger.LogDebug("Loaded ctor");
     }
@@ -63,10 +63,7 @@ public class ProfileRegistry
         try
         {
             string fileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, this.ProfileConfigName);
-            MigrateFromOtherVersion(fileContent);
-
-            _logger.LogDebug("Loaded registry");
-            return this.Deserializer.Deserialize<ProfileRegistryObject>(fileContent);
+            return MigrateFromOtherVersion(fileContent);
         }
         catch (Exception e)
         {
@@ -80,20 +77,47 @@ public class ProfileRegistry
 
     private ProfileRegistryObject MigrateFromOtherVersion(string content)
     {
-        double version = -1.0d;
-
         YamlHelper yamlHelper = new YamlHelper(content);
-        
-        if (yamlHelper.HasField("version"))
+        bool hasVersionTag = yamlHelper.HasField("version");
+
+        if (hasVersionTag)
         {
-            
             _logger.LogDebug("Found version tag");
+            
+            double versionTag = yamlHelper.GetDouble("version");
+            _logger.LogDebug($"Found registry version: {versionTag}");
+            
+            // Add future logic to migrate between versions
+        }
+        else
+        {
+            _logger.LogDebug("Version tag not present");
+
+            try
+            {
+                _logger.LogDebug("Try migrating from legacy build");
+                List<ProfileEntry> profileEntries = this.Deserializer.Deserialize<List<ProfileEntry>>(content);
+                
+                _logger.LogDebug("Legacy version detected");
+                
+                ProfileRegistryObject registryObject = new ProfileRegistryObject()
+                {
+                    Entries = profileEntries,
+                    Selected = Guid.Empty
+                };
+
+                return registryObject;
+            }
+            catch (Exception e)
+            {
+                this._logger.LogDebug(e, "Tried to parse legacy version, but failed");
+            }
         }
 
-        return null;
+        _logger.LogDebug("Loaded registry");
+        
+        return this.Deserializer.Deserialize<ProfileRegistryObject>(content);
     }
-
-    
     
     public void SetSelectedProfile(Guid identifier)
     {
