@@ -19,12 +19,13 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Company>AlexanderDotH</Company>
         <Product>Swig</Product>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <FileVersion>2.0.0</FileVersion>
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyOriginatorKeyFile>certificate.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
         <SignAssembly>true</SignAssembly>
+        <Version>2.0.0</Version>
     </PropertyGroup>
 
     <ItemGroup>
