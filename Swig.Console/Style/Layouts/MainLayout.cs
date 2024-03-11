@@ -1,3 +1,4 @@
+using System.Text;
 using Spectre.Console;
 using Swig.Console.Style.Layouts.Children;
 using Swig.Console.Style.Layouts.Children.EditProfile;
@@ -16,6 +17,7 @@ public class MainLayout : ILayout
     
     public void DrawLayout()
     {
+        AnsiConsole.Profile.Encoding = new UTF8Encoding();
         
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
             .Title(this.Model.GetTitle())

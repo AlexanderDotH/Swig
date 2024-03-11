@@ -35,14 +35,11 @@
     <ItemGroup>
       <PackageReference Include="Bogus" Version="35.4.1" />
       <PackageReference Include="LibGit2Sharp" Version="0.29.0" />
+      <PackageReference Include="SmartFormat" Version="3.3.2" />
       <PackageReference Include="Spectre.Console" Version="0.48.1-preview.0.32" />
       <PackageReference Include="Spectre.Console.Extensions.Logging" Version="0.3.0-alpha0011" />
       <PackageReference Include="Spectre.Console.Json" Version="0.48.0" />
       <PackageReference Include="YamlDotNet" Version="15.1.2" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Style\Components\" />
     </ItemGroup>
 
     <ItemGroup>

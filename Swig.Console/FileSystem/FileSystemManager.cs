@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using Spectre.Console.Extensions.Logging;
@@ -187,6 +188,12 @@ public class FileSystemManager
     {
         string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
         string configFolderName = ".config";
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            userProfile = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
+            configFolderName = string.Empty;
+        }
         
         return new DirectoryInfo(Path.Combine(userProfile, configFolderName));
     }
