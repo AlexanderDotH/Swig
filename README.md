@@ -44,3 +44,5 @@ sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/relea
 
 ## 🤝 Contributing
 We're always looking for cool cats to help make Swig even better. If you've got ideas, bug reports, or just want to show some love, feel free to open an issue or submit a pull request. Let's make git config management fun again!
+
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlexanderDotH_Swig&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AlexanderDotH_Swig)
