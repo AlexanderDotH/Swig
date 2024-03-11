@@ -44,7 +44,7 @@ public class ProfileRegistry
             GetProfileEntries();
         
         this.Registry.Entries?.ForEach(e => 
-            _logger.LogDebug($"Found profile id: {e.Identifier}"));
+            _logger.LogDebug("Found profile id: {identifier}", e.Identifier));
         
         _logger.LogDebug("Loaded ctor");
     }
@@ -55,7 +55,7 @@ public class ProfileRegistry
         
         if (!this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this.ProfileConfigName))
         {
-            _logger.LogWarning($"Registry file is not present and created an new empty one");
+            _logger.LogWarning("Registry file is not present and created an new empty one");
             _logger.LogDebug("Loaded registry");
             return this.UpdateRegistryOnDisk(new ProfileRegistryObject());
         }
@@ -67,7 +67,7 @@ public class ProfileRegistry
         }
         catch (Exception e)
         {
-            _logger.LogError($"Failed to parse registry file");
+            _logger.LogError("Failed to parse registry file");
             AnsiConsole.WriteException(e);
 
             _logger.LogDebug("Loaded registry, it will use a new registry object for now");
@@ -85,7 +85,7 @@ public class ProfileRegistry
             _logger.LogDebug("Found version tag");
             
             double versionTag = yamlHelper.GetDouble("version");
-            _logger.LogDebug($"Found registry version: {versionTag}");
+            _logger.LogDebug("Found registry version: {version}", versionTag);
             
             // Add future logic to migrate between versions
         }

@@ -17,7 +17,7 @@ public class ViewProfilesModel : ILayoutModel
 
         if (!profiles.Any())
         {
-            _logger.LogError($"Cannot find any profiles (Entries present {profiles.Count})");
+            _logger.LogError("Cannot find any profiles (Entries present {count})", profiles.Count);
             return null;
         }
         
@@ -38,7 +38,7 @@ public class ViewProfilesModel : ILayoutModel
             Markup currentName = new Markup(currentProfile.Name);
             Table currentTable = GetContentTable(currentProfile);
             
-            _logger.LogDebug($"Added Table entry No: {currentNumber}, Name: {currentName}, Object: {currentTable}");
+            _logger.LogDebug("Added Table entry No: {no}, Name: {name}, Object: {table}", i, currentProfile.Name, currentTable);
             
             table.AddRow(currentNumber, currentName, currentTable);
         }
