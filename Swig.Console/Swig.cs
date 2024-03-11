@@ -20,16 +20,16 @@ public class Swig
     
     public Swig(params string[] args)
     {
+        this.Args = args;
+        
         SpectreConsoleLoggerConfiguration loggerConfiguration = new SpectreConsoleLoggerConfiguration();
         loggerConfiguration.IncludeEventId = true;
         loggerConfiguration.IncludePrefix = true;
         
-        loggerConfiguration.LogLevel = LogLevel.Debug;
+        loggerConfiguration.LogLevel = args.Contains("--debug") ? LogLevel.Debug : LogLevel.None;
         LoggerConfiguration = loggerConfiguration;
         
         _swigInstance = this;
-        
-        this.Args = args;
         
         FileSystemManager = new FileSystemManager();
         ProfileRegistry = new ProfileRegistry(this.FileSystemManager);

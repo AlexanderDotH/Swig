@@ -152,7 +152,7 @@ public class ProfileRegistry
         }
         catch (Exception e)
         {
-            // TODO: Output (Cannot create default profile)
+            _logger.LogError(e, "Cannot create default config");
             return profileRegistry;
         }
     }

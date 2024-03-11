@@ -14,8 +14,7 @@ namespace Swig.Console.Configuration;
 
 public class ProfileManager
 {
-    private List<Profile> _profiles;
-
+    private readonly List<Profile> _profiles;
     public Profile Current { get; private set; }
     
     private ProfileRegistry ProfileRegistry { get; set; }
@@ -26,6 +25,8 @@ public class ProfileManager
 
     private readonly ILogger _logger = 
         new SpectreInlineLogger("Profile Manager", Swig.Instance.LoggerConfiguration);
+
+    private readonly string _gitConfigName = ".gitconfig";
 
     public ProfileManager(ProfileRegistry profileRegistry, FileSystemManager fileSystemManager)
     {
@@ -50,7 +51,7 @@ public class ProfileManager
 
     private void CreateBackupCopy()
     {
-        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, ".gitconfig");
+        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this._gitConfigName);
         
         if (backupFilePresent)
             return;
@@ -60,14 +61,14 @@ public class ProfileManager
         if (!gitConfig.Exists)
             return;
 
-        this.FileSystemManager.CopyTo(EnumFileSystemFolder.Root, gitConfig, "/", ".gitconfig");
+        this.FileSystemManager.CopyTo(EnumFileSystemFolder.Root, gitConfig, "/", this._gitConfigName);
     }
 
     public bool HasChanged(string gitConfigPath, Profile profile)
     {
         try
         {
-            string profileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, profile.Identifier.ToString(),".gitconfig");
+            string profileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Profiles, profile.Identifier.ToString(),this._gitConfigName);
             string gitConfigContent = FileUtils.ReadContent(gitConfigPath);
 
             return !profileContent.SequenceEqual(gitConfigContent);
@@ -95,12 +96,12 @@ public class ProfileManager
     
     public bool RestoreBackup()
     {
-        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, ".gitconfig");
+        bool backupFilePresent = this.FileSystemManager.IsFilePresent(EnumFileSystemFolder.Root, this._gitConfigName);
         
         if (!backupFilePresent)
             return false;
 
-        string originContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, ".gitconfig");
+        string originContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, this._gitConfigName);
         string originPath = GitUtils.GetOriginGitConfigPath();
 
         File.WriteAllText(originPath, originContent);
@@ -131,7 +132,7 @@ public class ProfileManager
 
     public bool DoesProfileExist(string profileName)
     {
-        return this._profiles.Any(p => p.Name.Equals(profileName));
+        return this._profiles.Exists(p => p.Name.Equals(profileName));
     }
 
     public Profile LoadProfile(string profileName)
@@ -139,7 +140,7 @@ public class ProfileManager
         if (!DoesProfileExist(profileName))
         {
             _logger.LogWarning($"Profile: {profileName} does not exists");
-            throw new Exception("Cannot find profile");
+            throw new ProfileException("Cannot find profile");
         }
         
         Profile profile = Swig.Instance.ProfileManager.GetProfileByName(profileName);
@@ -156,7 +157,7 @@ public class ProfileManager
         return this._profiles.First(p => p.Name.Equals(profileName));
     }
     
-    public Profile GetProfileById(Guid identifier)
+    private Profile GetProfileById(Guid identifier)
     {
         if (identifier == Guid.Empty)
         {
@@ -221,11 +222,11 @@ public class ProfileManager
         if (gitConfigPath != null)
         {
             newGitConfigPath = this.FileSystemManager.CopyTo(EnumFileSystemFolder.Profiles, new FileInfo(gitConfigPath),
-                workSpace.Name, ".gitconfig");
+                workSpace.Name, this._gitConfigName);
         }
         else
         {
-            newGitConfigPath = this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Profiles, workSpace.Name, ".gitconfig", string.Empty);
+            newGitConfigPath = this.FileSystemManager.CreateAndWriteFile(EnumFileSystemFolder.Profiles, workSpace.Name, this._gitConfigName, string.Empty);
         }
 
         profile.GitConfigFile = newGitConfigPath.FullName;
