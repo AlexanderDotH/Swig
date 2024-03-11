@@ -5,6 +5,8 @@ namespace Swig.Shared.Utils;
 
 public class OsUtils
 {
+    protected OsUtils() { }
+    
     public static void OpenFileExplorerAt(DirectoryInfo directoryInfo)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))

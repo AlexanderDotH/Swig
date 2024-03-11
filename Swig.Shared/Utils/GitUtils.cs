@@ -4,6 +4,8 @@ namespace Swig.Shared.Utils;
 
 public class GitUtils
 {
+    protected GitUtils() { }
+    
     public static string GetGlobalGitConfigPath()
     {
         IEnumerable<string> configs = GlobalSettings.GetConfigSearchPaths(ConfigurationLevel.Global);

@@ -1,7 +1,9 @@
 namespace Swig.Shared.Utils;
 
-public static class FileUtils
+public class FileUtils
 {
+    protected FileUtils() { }
+    
     public static DirectoryInfo CombineDirectories(DirectoryInfo directory1, string folderName)
     {
         if (folderName.Equals("/"))

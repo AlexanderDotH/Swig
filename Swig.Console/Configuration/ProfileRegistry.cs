@@ -67,7 +67,7 @@ public class ProfileRegistry
         }
         catch (Exception e)
         {
-            _logger.LogError("Failed to parse registry file");
+            _logger.LogError(e, "Failed to parse registry file");
             AnsiConsole.WriteException(e);
 
             _logger.LogDebug("Loaded registry, it will use a new registry object for now");

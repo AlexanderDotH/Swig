@@ -33,7 +33,5 @@ public class DeleteProfileLayout : BaseChildLayout
 
         if (this.Parent is EditProfileActionLayout layout)
             layout.DrawParent();
-
-        return;
     }
 }
