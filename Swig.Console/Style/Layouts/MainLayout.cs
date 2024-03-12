@@ -18,7 +18,8 @@ public class MainLayout : ILayout
     
     public void DrawLayout()
     {
-        AnsiConsole.Profile.Encoding = new UTF8Encoding();
+        if (Swig.Instance.RequiresSetup)
+            new UserSetupLayout(this).DrawLayout();
         
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
             .Title(this.Model.GetTitle())

@@ -18,18 +18,12 @@ public class Swig
     private static Swig _swigInstance;
     
     public SpectreConsoleLoggerConfiguration LoggerConfiguration { get; private set; }
-    public bool AreEmojisAllowed { get; set; }
     
     private string[] Args { get; set; }
     
     public Swig(params string[] args)
     {
-        System.Console.OutputEncoding = Encoding.ASCII;
-        
-        AreEmojisAllowed = !RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
-        
-        if (AreEmojisAllowed)
-            System.Console.OutputEncoding = Encoding.UTF8;
+        System.Console.OutputEncoding = Encoding.UTF8;
         
         #pragma warning disable S3010
         _swigInstance = this;
@@ -60,5 +54,17 @@ public class Swig
         {
             return _swigInstance;
         }
+    }
+    
+    public bool AreEmojisAllowed
+    {
+        get => this.ProfileRegistry.AreEmojisAllowed;
+        set => this.ProfileRegistry.AreEmojisAllowed = value;
+    }
+    
+    public bool RequiresSetup
+    {
+        get => this.ProfileRegistry.RequiresSetup;
+        set => this.ProfileRegistry.RequiresSetup = value;
     }
 }

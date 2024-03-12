@@ -28,7 +28,7 @@ public class ProfileRegistry
     public ProfileRegistry(FileSystemManager fileSystemManager)
     {
         this.FileSystemManager = fileSystemManager;
-        this.RegistryMigration = new RegistryMigration();
+        this.RegistryMigration = new RegistryMigration(this);
         
         Serializer = new SerializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -92,7 +92,7 @@ public class ProfileRegistry
         this.Registry = UpdateRegistryOnDisk(this.Registry);
     }
     
-    private ProfileRegistryObject UpdateRegistryOnDisk(ProfileRegistryObject profileRegistry)
+    public ProfileRegistryObject UpdateRegistryOnDisk(ProfileRegistryObject profileRegistry)
     {
         try
         {
@@ -115,5 +115,25 @@ public class ProfileRegistry
     public Guid Selected
     {
         get => this.Registry.Selected;
+    }
+
+    public bool AreEmojisAllowed
+    {
+        get => this.Registry.AreEmojisAllowed;
+        set
+        {
+            this.Registry.AreEmojisAllowed = value;
+            this.Registry = UpdateRegistryOnDisk(this.Registry);
+        }
+    }
+    
+    public bool RequiresSetup
+    {
+        get => this.Registry.RequiresSetup;
+        set
+        {
+            this.Registry.RequiresSetup = value;
+            this.Registry = UpdateRegistryOnDisk(this.Registry);
+        }
     }
 }

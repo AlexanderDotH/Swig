@@ -9,10 +9,7 @@ public class ProfileRegistryObject
     
     public bool RequiresSetup { get; set; }
     public bool AreEmojisAllowed { get; set; }
-    
-    #pragma warning disable S1104
-    public byte Version = 1;
-    #pragma warning restore S1104
+    public byte Version { get; set; } = 2;
     
     public ProfileRegistryObject()
     {

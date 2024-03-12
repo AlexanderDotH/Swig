@@ -13,12 +13,15 @@ public class RegistryMigration
     private readonly ILogger _logger = 
         new SpectreInlineLogger("RegistryMigration", Swig.Instance.LoggerConfiguration);
 
+    private ProfileRegistry ProfileRegistry { get; set; }
+    
     private IDeserializer Deserializer { get; set; }
     
     private ProfileRegistryObject DefaultRegistry { get; set; }
     
-    public RegistryMigration()
+    public RegistryMigration(ProfileRegistry profileRegistry)
     {
+        this.ProfileRegistry = profileRegistry;
         this.DefaultRegistry = new ProfileRegistryObject();
 
         Deserializer = new DeserializerBuilder()
@@ -78,7 +81,7 @@ public class RegistryMigration
     {
         if (versionTag == 1 && this.DefaultRegistry.Version == 2)
         {
-            _logger.LogDebug("Migrating from {} to {}", versionTag, registryVersion);
+            _logger.LogDebug("Migrating from {} to {}...", versionTag, registryVersion);
             
             IDeserializer deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -89,11 +92,14 @@ public class RegistryMigration
             {
                 ProfileRegistryObject deserialized = deserializer.Deserialize<ProfileRegistryObject>(content);
 
+                deserialized.Version = 2;
                 deserialized.RequiresSetup = true;
                 deserialized.AreEmojisAllowed = false;
 
                 _logger.LogInformation("Migrated from {} to {}!", versionTag, registryVersion);
 
+                this.ProfileRegistry.UpdateRegistryOnDisk(deserialized);
+                
                 return deserialized;
             }
             catch (Exception e)
