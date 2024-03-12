@@ -23,7 +23,7 @@ public class SyncProfileModel : ILayoutModel
             string gitConfigPath = GitUtils.GetOriginGitConfigPath();
             Swig.Instance.ProfileManager.SyncGitConfig(gitConfigPath, profile);
 
-            _logger.LogInformation("Synced profile {}!", profile.Name);
+            _logger.LogInformation("Synced profile {name}!", profile.Name);
             
             return true;
         }

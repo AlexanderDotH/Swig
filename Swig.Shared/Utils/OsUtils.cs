@@ -29,7 +29,12 @@ public class OsUtils
         } 
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Process.Start($"xdg-open {directoryInfo.FullName}");
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.Arguments = directoryInfo.FullName;
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.FileName = "/usr/bin/xdg-open";
+            
+            Process.Start(processStartInfo);
         }
     }
 }

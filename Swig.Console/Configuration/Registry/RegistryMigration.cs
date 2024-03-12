@@ -81,7 +81,7 @@ public class RegistryMigration
     {
         if (versionTag == 1 && this.DefaultRegistry.Version == 2)
         {
-            _logger.LogDebug("Migrating from {} to {}...", versionTag, registryVersion);
+            _logger.LogDebug("Migrating from {tag} to {version}...", versionTag, registryVersion);
             
             IDeserializer deserializer = new DeserializerBuilder()
                 .WithNamingConvention(CamelCaseNamingConvention.Instance)
@@ -96,7 +96,7 @@ public class RegistryMigration
                 deserialized.RequiresSetup = true;
                 deserialized.AreEmojisAllowed = false;
 
-                _logger.LogInformation("Migrated from {} to {}!", versionTag, registryVersion);
+                _logger.LogInformation("Migrated from {tag} to {version}!", versionTag, registryVersion);
 
                 this.ProfileRegistry.UpdateRegistryOnDisk(deserialized);
                 

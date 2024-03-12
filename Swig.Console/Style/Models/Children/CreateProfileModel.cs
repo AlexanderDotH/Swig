@@ -7,5 +7,5 @@ public class CreateProfileModel : ILayoutModel
 
     public readonly string InvalidNameString = "[red1]Please provide a non duplicated profile name[/]";
     public readonly string ImportGitConfigPrompt = "Do you want to import the git config [mediumturquoise]from disk[/]?";
-    public readonly string ProvidePathPrompt = "Pleas provide a valid [mediumturquoise].gitconfig[/]";
+    public readonly string ProvidePathPrompt = "Please provide a valid [mediumturquoise].gitconfig[/]";
 }
