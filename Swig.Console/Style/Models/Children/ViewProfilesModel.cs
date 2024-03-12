@@ -11,18 +11,25 @@ public class ViewProfilesModel : ILayoutModel
     private readonly ILogger _logger = 
         new SpectreInlineLogger("ViewProfilesModel", Swig.Instance.LoggerConfiguration);
 
+    public readonly string NoProfilesString =
+        "It's pretty empty here, please come back later or create a profile [red]{0:choose(True|False)::red_heart:|<3}[/]";
+    
     public Table GetProfileTable()
     {
         List<Profile> profiles = Swig.Instance.ProfileManager.Profiles;
 
         if (!profiles.Any())
         {
-            _logger.LogError("Cannot find any profiles (Entries present {count})", profiles.Count);
+            _logger.LogWarning("Cannot find any profiles (Entries present {count})", profiles.Count);
             return null;
         }
         
         Table table = new Table();
-        table.Border = TableBorder.Square;
+        
+        table.Border = TableBorder.Ascii;
+        
+        if (Swig.Instance.AreEmojisAllowed)
+            table.Border = TableBorder.Square;
         
         table.AddColumn(new TableColumn("Number"));
         table.AddColumn(new TableColumn("Name"));
@@ -32,8 +39,6 @@ public class ViewProfilesModel : ILayoutModel
         {
             Profile currentProfile = profiles[i];
 
-            AnsiConsole.MarkupLine($"Loaded profile {currentProfile.Name}");
-            
             Markup currentNumber = new Markup(i.ToString());
             Markup currentName = new Markup(currentProfile.Name);
             Table currentTable = GetContentTable(currentProfile);

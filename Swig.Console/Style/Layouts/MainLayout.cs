@@ -1,5 +1,6 @@
 using System.Text;
 using Spectre.Console;
+using Swig.Console.Helper;
 using Swig.Console.Style.Layouts.Children;
 using Swig.Console.Style.Layouts.Children.EditProfile;
 using Swig.Console.Style.Models;
@@ -21,53 +22,21 @@ public class MainLayout : ILayout
         
         SelectionPrompt<string> actionSelectonPrompt = new SelectionPrompt<string>()
             .Title(this.Model.GetTitle())
-            .AddChoices("View", "Load", "Create", "Edit", "Restore", "Exit");
+            .AddChoices(
+                this.Model.ViewString, 
+                this.Model.LoadString, 
+                this.Model.CreateString, 
+                this.Model.EditString, 
+                this.Model.RestoreString, 
+                this.Model.ExitString);
 
         string choice = AnsiConsole.Prompt(actionSelectonPrompt);
 
-        switch (choice)
-        {
-            case "View":
-            {
-                new ViewProfilesLayout(this).DrawLayout();
-                break;
-            }
-            case "Load":
-            {
-                new LoadProfileLayout(this).DrawLayout();
-                break;
-            }
-            case "Create":
-            {
-                new CreateProfileLayout(this).DrawLayout();
-                break;
-            }
-            case "Edit":
-            {
-                new EditProfileSelectionLayout(this).DrawLayout();
-                break;
-            }
-            case "Restore":
-            {
-                if (Swig.Instance.ProfileManager.RestoreBackup())
-                {
-                    AnsiConsole.MarkupLine("[mediumturquoise]Successfully[/] restored backup!");
-                }
-                else
-                {
-                    AnsiConsole.MarkupLine("[red1]Cannot[/] restored backup because there is no backup copy :sad_but_relieved_face:.");
-                }
-                
-                System.Console.ReadKey();
-                AnsiConsole.Clear();
-                DrawLayout();
-                break;
-            }
-            case "Exit":
-            {
-                Environment.Exit(0);
-                break;
-            }
-        }
+        ChoiceHelper.Choice(choice, this.Model.ViewString, () => new ViewProfilesLayout(this).DrawLayout());
+        ChoiceHelper.Choice(choice, this.Model.LoadString, () => new LoadProfileLayout(this).DrawLayout());
+        ChoiceHelper.Choice(choice, this.Model.CreateString, () => new CreateProfileLayout(this).DrawLayout());
+        ChoiceHelper.Choice(choice, this.Model.EditString, () => new EditProfileSelectionLayout(this).DrawLayout());
+        ChoiceHelper.Choice(choice, this.Model.RestoreString, () => new RestoreBackupLayout(this).DrawLayout());
+        ChoiceHelper.Choice(choice, this.Model.ExitString, () => Environment.Exit(0));
     }
 }

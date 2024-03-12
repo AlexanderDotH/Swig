@@ -1,5 +1,7 @@
+using SmartFormat;
 using Spectre.Console;
-using Swig.Console.Style.Models.Children;
+using Swig.Console.Helper;
+using Swig.Console.Style.Models.Children.EditProfile;
 using Swig.Shared.Utils;
 using Profile = Swig.Shared.Classes.Profile;
 
@@ -19,39 +21,31 @@ public class EditProfileActionLayout : BaseChildLayout
     public override void DrawLayout()
     {
         string openLabel = this.Model.GetOsSpecificOpenLabel();
+        string backLabel = this.FormattedBackLabel;
+        string renameLabel = this.Model.RenameActionString;
+        string deleteLabel = this.Model.DeleteActionString;
         
         SelectionPrompt<string> editOptionSelectionPrompt = new SelectionPrompt<string>()
-            .Title($"What do you want to do with [mediumturquoise]{this.Profile.Name}[/]?")
-            .AddChoices(":backhand_index_pointing_left: Go back", "Rename", openLabel, "Delete");
+            .Title(Smart.Format(this.Model.EditActionPromptString, this.Profile))
+            .AddChoices(backLabel, renameLabel, openLabel, deleteLabel);
 
         string choice = AnsiConsole.Prompt(editOptionSelectionPrompt);
 
-        if (choice.SequenceEqual(openLabel))
+        // Back
+        ChoiceHelper.Choice(choice, backLabel, () => this.DrawParent());
+        
+        // Open in explorer
+        ChoiceHelper.Choice(choice, openLabel, () =>
         {
             DirectoryInfo profileFolder = Swig.Instance.ProfileManager.PrepareWorkspace(this.Profile);
             OsUtils.OpenFileExplorerAt(profileFolder);
             DrawLayout();
-        }
+        });
         
-        switch (choice)
-        {
-            case ":backhand_index_pointing_left: Go back":
-            {
-                this.DrawParent();
-                break;
-            }
-            case "Rename":
-            {   
-                new RenameProfileLayout(this, this.Profile).DrawLayout();
-                break;
-            }
-            case "Delete":
-            {   
-                new DeleteProfileLayout(this, this.Profile).DrawLayout();
-                break;
-            }
-        }
+        // Rename profile
+        ChoiceHelper.Choice(choice, renameLabel, () => new RenameProfileLayout(this, this.Profile).DrawLayout());
         
-        
+        // Delete profile
+        ChoiceHelper.Choice(choice, deleteLabel, () => new DeleteProfileLayout(this, this.Profile).DrawLayout());
     }
 }

@@ -6,6 +6,13 @@ namespace Swig.Console.Style.Models;
 
 public class MainLayoutModel : ILayoutModel
 {
+    public readonly string ViewString = "View";
+    public readonly string LoadString = "Load";
+    public readonly string CreateString = "Create";
+    public readonly string EditString = "Edit";
+    public readonly string RestoreString = "Restore";
+    public readonly string ExitString = "Exit";
+    
     public string GetTitle()
     {
         StringBuilder titleBuilder = new StringBuilder();

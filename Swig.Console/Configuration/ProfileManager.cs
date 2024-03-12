@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using Spectre.Console.Extensions.Logging;
+using Swig.Console.Configuration.Registry;
 using Swig.Console.FileSystem;
 using Swig.Shared.Enums;
 using Swig.Shared.Exceptions;

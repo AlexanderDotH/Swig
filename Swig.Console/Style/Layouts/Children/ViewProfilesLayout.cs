@@ -1,3 +1,4 @@
+using SmartFormat;
 using Spectre.Console;
 using Swig.Console.Style.Models.Children;
 
@@ -14,14 +15,16 @@ public class ViewProfilesLayout : BaseChildLayout
 
     public override void DrawLayout()
     {
+        string noProfilesLabel = Smart.Format(this.Model.NoProfilesString, Swig.Instance.AreEmojisAllowed);
+        
         Layout leftLayout = new Layout("View Profiles");
         leftLayout.Name = "Profiles";
-
+        
         Table profiles = this.Model.GetProfileTable();
 
         if (profiles == null)
         {
-            leftLayout.Update(new Markup("It's pretty empty here, please come back later [red]:red_heart:[/]"));
+            leftLayout.Update(new Markup(noProfilesLabel));
         }
         else
         {

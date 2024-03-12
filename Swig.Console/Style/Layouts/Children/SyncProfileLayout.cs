@@ -1,5 +1,5 @@
 using Spectre.Console;
-using Swig.Shared.Utils;
+using Swig.Console.Style.Models.Children;
 using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children;
@@ -7,32 +7,29 @@ namespace Swig.Console.Style.Layouts.Children;
 public class SyncProfileLayout : BaseChildLayout
 {
     private Profile Profile { get; set; }
-    
+    private SyncProfileModel Model { get; set; }
+   
     public SyncProfileLayout(ILayout parent, Profile profile) : base(parent)
     {
+        this.Model = new SyncProfileModel();
         this.Profile = profile;
     }
 
     public override void DrawLayout()
     {
         bool confirmSync =
-            AnsiConsole.Confirm("Your current gitconfig has been [mediumturquoise]changed[/], do you want to sync it with your profile?", true);
+            AnsiConsole.Confirm(this.Model.SyncPromptString, true);
 
         if (!confirmSync)
-        {
             return;
-        }
-        
-        try
+
+        if (this.Model.SyncProfile(this.Profile))
         {
-            string gitConfigPath = GitUtils.GetOriginGitConfigPath();
-            Swig.Instance.ProfileManager.SyncGitConfig(gitConfigPath, this.Profile);
-            
-            AnsiConsole.MarkupLine("[mediumturquoise]Successfully[/] synced your profile config");
+            AnsiConsole.MarkupLine(this.Model.SuccessProfileSyncString);
         }
-        catch (Exception e)
+        else
         {
-            AnsiConsole.MarkupLine("[red1]Cannot sync your profile config[/]");
+            AnsiConsole.MarkupLine(this.Model.ErrorProfileSyncString);
         }
     }
 }

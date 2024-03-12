@@ -1,40 +1,32 @@
 using Spectre.Console;
+using Swig.Console.Helper;
 using Swig.Console.Style.Models.Children;
+using Swig.Console.Style.Models.Children.EditProfile;
 using Profile = Swig.Shared.Classes.Profile;
 
 namespace Swig.Console.Style.Layouts.Children.EditProfile;
 
 public class EditProfileSelectionLayout : BaseChildLayout
 {
-    private BaseProfileSelectionModel Model { get; set; }
+    private EditProfileSelectionModel Model { get; set; }
     
     public EditProfileSelectionLayout(ILayout parent) : base(parent)
     {
-        this.Model = new BaseProfileSelectionModel();
+        this.Model = new EditProfileSelectionModel();
     }
 
     public override void DrawLayout()
     {
         SelectionPrompt<string> profileSelectionPrompt = new SelectionPrompt<string>()
-            .Title("Please pick a [mediumturquoise]profile[/]")
-            .AddChoices(":backhand_index_pointing_left: Go back")
+            .Title(this.Model.ProfileSelectionPrompt)
+            .AddChoices(this.FormattedBackLabel)
             .AddChoices(this.Model.GetChoices());
 
         string choice = AnsiConsole.Prompt(profileSelectionPrompt);
+
+        ChoiceHelper.Choice(choice, this.FormattedBackLabel, () => this.DrawParent());
         
-        switch (choice)
-        {
-            case ":backhand_index_pointing_left: Go back":
-            {
-                this.DrawParent();
-                break;
-            }
-            default:
-            {
-                Profile selectedProfile = Swig.Instance.ProfileManager.GetProfileByName(choice);
-                new EditProfileActionLayout(this, selectedProfile).DrawLayout();
-                break;
-            }
-        }
+        Profile selectedProfile = Swig.Instance.ProfileManager.GetProfileByName(choice);
+        new EditProfileActionLayout(this, selectedProfile).DrawLayout();
     }
 }

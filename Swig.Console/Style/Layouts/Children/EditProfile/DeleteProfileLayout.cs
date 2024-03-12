@@ -1,6 +1,5 @@
 using SmartFormat;
 using Spectre.Console;
-using Swig.Console.Style.Models.Children;
 using Swig.Console.Style.Models.Children.EditProfile;
 using Profile = Swig.Shared.Classes.Profile;
 

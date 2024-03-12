@@ -72,14 +72,14 @@ public class YamlHelper
         return null;
     }
     
-    public double GetDouble(string fieldName)
+    public byte GetByte(string fieldName)
     {
         YamlNode versionNode = GetContent(fieldName);
 
         if (versionNode.NodeType == YamlNodeType.Scalar && 
             versionNode is YamlScalarNode scalarNode)
         {
-            return double.Parse(scalarNode.Value);
+            return byte.Parse(scalarNode.Value);
         }
 
         throw new YamlException($"Wrong data type for field \"{fieldName}\"");

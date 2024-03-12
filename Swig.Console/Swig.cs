@@ -1,6 +1,9 @@
+using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.Extensions.Logging;
 using Spectre.Console.Extensions.Logging;
 using Swig.Console.Configuration;
+using Swig.Console.Configuration.Registry;
 using Swig.Console.FileSystem;
 using Swig.Console.Style.Layouts;
 
@@ -15,11 +18,19 @@ public class Swig
     private static Swig _swigInstance;
     
     public SpectreConsoleLoggerConfiguration LoggerConfiguration { get; private set; }
+    public bool AreEmojisAllowed { get; set; }
     
     private string[] Args { get; set; }
     
     public Swig(params string[] args)
     {
+        System.Console.OutputEncoding = Encoding.ASCII;
+        
+        AreEmojisAllowed = !RuntimeInformation.IsOSPlatform(OSPlatform.Linux);
+        
+        if (AreEmojisAllowed)
+            System.Console.OutputEncoding = Encoding.UTF8;
+        
         #pragma warning disable S3010
         _swigInstance = this;
         #pragma warning restore S3010

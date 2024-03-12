@@ -1,4 +1,3 @@
-using System.Globalization;
 using Microsoft.Extensions.Logging;
 using Spectre.Console;
 using Spectre.Console.Extensions.Logging;
@@ -7,13 +6,11 @@ using Swig.Console.Helper;
 using Swig.Shared.Classes;
 using Swig.Shared.Enums;
 using Swig.Shared.Serializable;
-using YamlDotNet.Core;
-using YamlDotNet.RepresentationModel;
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 using Profile = Swig.Shared.Classes.Profile;
 
-namespace Swig.Console.Configuration;
+namespace Swig.Console.Configuration.Registry;
 
 public class ProfileRegistry
 {
@@ -21,9 +18,9 @@ public class ProfileRegistry
     private string ProfileConfigName { get; } = "profiles.yaml";
     
     private FileSystemManager FileSystemManager { get; set; }
+    private RegistryMigration RegistryMigration { get; set; }
     
     private ISerializer Serializer { get; set; }
-    private IDeserializer Deserializer { get; set; }
 
     private readonly ILogger _logger = 
         new SpectreInlineLogger("Profile Registry", Swig.Instance.LoggerConfiguration);
@@ -31,12 +28,9 @@ public class ProfileRegistry
     public ProfileRegistry(FileSystemManager fileSystemManager)
     {
         this.FileSystemManager = fileSystemManager;
-
+        this.RegistryMigration = new RegistryMigration();
+        
         Serializer = new SerializerBuilder()
-            .WithNamingConvention(CamelCaseNamingConvention.Instance)
-            .Build();
-
-        Deserializer = new DeserializerBuilder()
             .WithNamingConvention(CamelCaseNamingConvention.Instance)
             .Build();
 
@@ -63,7 +57,7 @@ public class ProfileRegistry
         try
         {
             string fileContent = this.FileSystemManager.ReadFile(EnumFileSystemFolder.Root, this.ProfileConfigName);
-            return MigrateFromOtherVersion(fileContent);
+            return this.RegistryMigration.MigrateFromOtherVersion(fileContent);
         }
         catch (Exception e)
         {
@@ -73,50 +67,6 @@ public class ProfileRegistry
             _logger.LogDebug("Loaded registry, it will use a new registry object for now");
             return new ProfileRegistryObject();
         }
-    }
-
-    private ProfileRegistryObject MigrateFromOtherVersion(string content)
-    {
-        YamlHelper yamlHelper = new YamlHelper(content);
-        bool hasVersionTag = yamlHelper.HasField("version");
-
-        if (hasVersionTag)
-        {
-            _logger.LogDebug("Found version tag");
-            
-            double versionTag = yamlHelper.GetDouble("version");
-            _logger.LogDebug("Found registry version: {version}", versionTag);
-            
-            // Add future logic to migrate between versions
-        }
-        else
-        {
-            _logger.LogDebug("Version tag not present");
-
-            try
-            {
-                _logger.LogDebug("Try migrating from legacy build");
-                List<ProfileEntry> profileEntries = this.Deserializer.Deserialize<List<ProfileEntry>>(content);
-                
-                _logger.LogDebug("Legacy version detected");
-                
-                ProfileRegistryObject registryObject = new ProfileRegistryObject()
-                {
-                    Entries = profileEntries,
-                    Selected = Guid.Empty
-                };
-
-                return registryObject;
-            }
-            catch (Exception e)
-            {
-                this._logger.LogDebug(e, "Tried to parse legacy version, but failed");
-            }
-        }
-
-        _logger.LogDebug("Loaded registry");
-        
-        return this.Deserializer.Deserialize<ProfileRegistryObject>(content);
     }
     
     public void SetSelectedProfile(Guid identifier)

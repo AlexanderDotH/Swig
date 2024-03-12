@@ -20,7 +20,12 @@ public class OsUtils
         } 
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Process.Start($"explorer.exe {directoryInfo.FullName}");
+            ProcessStartInfo processStartInfo = new ProcessStartInfo();
+            processStartInfo.Arguments = $"\"{directoryInfo.FullName}\"";
+            processStartInfo.UseShellExecute = true;
+            processStartInfo.FileName = "C:\\Windows\\explorer.exe";
+            
+            Process.Start(processStartInfo);
         } 
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
