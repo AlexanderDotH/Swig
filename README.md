@@ -30,16 +30,15 @@ Ready to add some swag to your git config management? Follow these steps:
 <details>
   <summary>🐧 Linux</summary>
 
-  1. Use the windows setup.
-  2. Use the single binary.
+  1. Use the `swig-linux` single binary.
 
 </details>
 
 <details>
   <summary>🪟 Windows</summary>
 
-  1. Use the windows setup.
-  2. Use the single binary.
+  1. Use the `swig-setup.exe` windows setup.
+  2. Use the `swig-binary.exe` single binary.
 
 </details>
 
@@ -48,17 +47,17 @@ Ready to add some swag to your git config management? Follow these steps:
 
   ### zsh
   ```bash
-  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.zshrc && source ~/.zshrc
+  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/swig-osx" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.zshrc && source ~/.zshrc
   ```
 
   ### bash
   ```bash
-  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.bashrc && source ~/.bashrc
+  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/swig-osx" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.bashrc && source ~/.bashrc
   ```
 
   ### System wide
   ```bash
-  sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
+  sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/swig-osx" && sudo chmod +x /usr/local/bin/swig
   ```
   
 </details>
