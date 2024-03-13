@@ -26,6 +26,7 @@
         <PublicSign>true</PublicSign>
         <SignAssembly>true</SignAssembly>
         <Version>3.0.0</Version>
+        <ApplicationIcon>Assets\swig-squircle.ico</ApplicationIcon>
     </PropertyGroup>
 
     <ItemGroup>
