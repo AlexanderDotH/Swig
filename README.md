@@ -3,7 +3,7 @@
   <h1 align="center">Swig - The Swag Way to Switch Git Configs</h1>
 </p>
 
-Swig is the coolest git config switcher out there, designed specifically for macOS! With Swig, you can easily change your git config right from your terminal using a single command. It's like having a personal stylist for your git config - making you look good without the hassle.
+Swig is the coolest git config switcher out there! With Swig, you can easily change your git config right from your terminal using a single command. It's like having a personal stylist for your git config - making you look good without the hassle.
 
 ## ✨ Features
 
@@ -21,26 +21,48 @@ Swig is the coolest git config switcher out there, designed specifically for mac
 
 Ready to add some swag to your git config management? Follow these steps:
 
-1. Install Swig using:
+1. Install Swig using.
 2. Run `swig` in your terminal and let the magic happen
 3. Enjoy seamless git config switching and impress your colleagues with your new-found efficiency
 
 ## 🛠️ Install Swig
 
-### zsh
-```bash
-sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.zshrc && source ~/.zshrc
-```
+<details>
+  <summary>🐧 Linux</summary>
 
-### bash
-```bash
-sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.bashrc && source ~/.bashrc
-```
+  1. Use the windows setup.
+  2. Use the single binary.
 
-### System wide
-```bash
-sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
-```
+</details>
+
+<details>
+  <summary>🪟 Windows</summary>
+
+  1. Use the windows setup.
+  2. Use the single binary.
+
+</details>
+
+<details>
+  <summary>🍏 Macos</summary>
+
+  ### zsh
+  ```bash
+  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.zshrc && source ~/.zshrc
+  ```
+
+  ### bash
+  ```bash
+  sudo curl -L -o ~/Applications/Swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x ~/Applications/Swig && echo 'alias swig="~/Applications/Swig"' >> ~/.bashrc && source ~/.bashrc
+  ```
+
+  ### System wide
+  ```bash
+  sudo curl -L -o /usr/local/bin/swig "https://github.com/AlexanderDotH/Swig/releases/latest/download/Swig" && sudo chmod +x /usr/local/bin/swig
+  ```
+  
+</details>
+
 
 ## 🤝 Contributing
 We're always looking for cool cats to help make Swig even better. If you've got ideas, bug reports, or just want to show some love, feel free to open an issue or submit a pull request. Let's make git config management fun again!
