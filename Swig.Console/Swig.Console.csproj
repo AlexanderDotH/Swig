@@ -19,8 +19,8 @@
         <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
         <Company>AlexanderDotH</Company>
         <Product>Swig</Product>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
-        <FileVersion>2.0.0</FileVersion>
+        <AssemblyVersion>3.0.0</AssemblyVersion>
+        <FileVersion>3.0.0</FileVersion>
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyOriginatorKeyFile>certificate.snk</AssemblyOriginatorKeyFile>
         <PublicSign>true</PublicSign>
