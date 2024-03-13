@@ -37,8 +37,8 @@ Ready to add some swag to your git config management? Follow these steps:
 <details>
   <summary>🪟 Windows</summary>
 
-  1. Use the `swig-setup.exe` windows setup.
-  2. Use the `swig-binary.exe` single binary.
+  1. Use the `swig-setup.msi` windows setup.
+  2. Use the `swig-bin.exe` single binary.
 
 </details>
 
