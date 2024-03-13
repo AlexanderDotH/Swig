@@ -32,6 +32,18 @@ Ready to add some swag to your git config management? Follow these steps:
 
   1. Use the `swig-linux` single binary.
 
+  2. User your cli:
+
+  ### Yay
+  ```bash
+  yay -S swig-cli
+  ```
+
+  ### Pacman/Paru
+  ```bash
+  paru -S swig-cli
+  ```
+
 </details>
 
 <details>
@@ -67,3 +79,4 @@ Ready to add some swag to your git config management? Follow these steps:
 We're always looking for cool cats to help make Swig even better. If you've got ideas, bug reports, or just want to show some love, feel free to open an issue or submit a pull request. Let's make git config management fun again!
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AlexanderDotH_Swig&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=AlexanderDotH_Swig)
+[![AUR Version](https://img.shields.io/aur/version/swig-cli)](https://aur.archlinux.org/packages/swig-cli)
