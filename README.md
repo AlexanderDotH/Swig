@@ -39,7 +39,7 @@ Ready to add some swag to your git config management? Follow these steps:
   yay -S swig-cli
   ```
 
-  ### Pacman/Paru
+  ### Paru
   ```bash
   paru -S swig-cli
   ```
